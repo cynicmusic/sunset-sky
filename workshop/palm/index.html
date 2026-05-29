@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" style="background:#0d1410">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0d1410" />
+    <style>
+      /* paint the page dark BEFORE the canvas exists — fights the white
+         flash on refresh (the WebGL canvas starts transparent until Three
+         calls setClearColor + render). */
+      html, body { margin: 0; height: 100%; background: #0d1410; color-scheme: dark; }
+      canvas { background: #0d1410; display: block; }
+      #ws-canvas { background: #0d1410; }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>palm workshop</title>
+  </head>
+  <body style="background:#0d1410">
+    <div id="ws-canvas" style="position:fixed;inset:0"></div>
+    <div id="ui-root"></div>
+    <script type="module" src="/src/workshop/palm/palmWorkshop.js"></script>
+  </body>
+</html>

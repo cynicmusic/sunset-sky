@@ -1,0 +1,196 @@
+.pool-card {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  width: min(408px, calc(100vw - 24px));
+  border: 1px solid rgba(255, 156, 78, 0.32);
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, rgba(16, 23, 35, 0.92), rgba(7, 18, 25, 0.86)),
+    rgba(6, 12, 18, 0.9);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.38);
+  color: rgba(232, 238, 234, 0.86);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  pointer-events: auto;
+  user-select: none;
+}
+
+.pool-card.collapsed {
+  transform: translateX(calc(-100% - 24px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pool-head {
+  padding: 13px 15px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.pool-title {
+  color: #ffe1bf;
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.pool-sub {
+  margin-top: 6px;
+  color: rgba(201, 213, 210, 0.62);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.pool-body {
+  max-height: min(70vh, 620px);
+  overflow: auto;
+  padding: 9px 14px 13px;
+}
+
+.pool-body::-webkit-scrollbar { width: 6px; }
+.pool-body::-webkit-scrollbar-thumb { background: rgba(255, 165, 80, 0.22); border-radius: 3px; }
+
+.pool-stage-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.pool-stage {
+  height: 27px;
+  border: 1px solid rgba(255, 160, 88, 0.33);
+  border-radius: 4px;
+  background: rgba(10, 18, 25, 0.82);
+  color: rgba(218, 226, 224, 0.74);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pool-stage.active {
+  color: #11161c;
+  background: linear-gradient(180deg, #ffdb9f, #ff9334);
+  border-color: rgba(255, 222, 170, 0.92);
+  box-shadow: 0 0 12px rgba(255, 147, 52, 0.32);
+}
+
+.pool-field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 6px;
+  padding: 5px 0;
+}
+
+.pool-label {
+  color: rgba(226, 232, 228, 0.83);
+  font-size: 11.5px;
+}
+
+.pool-hint {
+  grid-column: 1 / -1;
+  color: rgba(181, 196, 194, 0.5);
+  font-size: 9.8px;
+  font-style: italic;
+  line-height: 1.25;
+  margin-top: -2px;
+}
+
+.pool-value {
+  min-width: 62px;
+  text-align: right;
+  color: rgba(255, 230, 200, 0.92);
+  font-size: 11px;
+}
+
+.pool-slider {
+  grid-column: 1 / -1;
+  height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.pool-slider input[type="range"] {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  border: 0;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(90deg, rgba(255, 142, 64, 0.86) var(--pct, 0%), rgba(255, 255, 255, 0.06) var(--pct, 0%));
+}
+
+.pool-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 232, 205, 0.42);
+  background: linear-gradient(135deg, #ffbc7b, #ff8833);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 0 10px rgba(255, 138, 58, 0.42);
+}
+
+.pool-select {
+  grid-column: 1 / -1;
+  height: 27px;
+  border: 1px solid rgba(255, 160, 88, 0.24);
+  border-radius: 4px;
+  background: rgba(7, 14, 20, 0.92);
+  color: rgba(230, 238, 236, 0.82);
+  font-family: inherit;
+  outline: none;
+}
+
+.pool-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin: 5px 0 11px;
+}
+
+.pool-swatch {
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.pool-hints {
+  position: fixed;
+  left: 14px;
+  bottom: 11px;
+  z-index: 12;
+  color: rgba(220, 229, 226, 0.42);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.pool-hints kbd {
+  color: rgba(255, 224, 190, 0.62);
+  font: inherit;
+}
+
+.pool-handle {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  z-index: 21;
+  width: 38px;
+  height: 32px;
+  border: 1px solid rgba(255, 160, 88, 0.38);
+  border-radius: 4px;
+  background: rgba(10, 16, 22, 0.86);
+  color: #ff9b45;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pool-handle.visible {
+  opacity: 1;
+  pointer-events: auto;
+}

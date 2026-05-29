@@ -1,0 +1,361 @@
+:root {
+  --bg-deep: #081018;
+  --bg-glass: rgba(10, 18, 26, 0.76);
+  --bg-glass-strong: rgba(6, 12, 18, 0.92);
+  --border-subtle: rgba(255, 165, 80, 0.10);
+  --border-soft: rgba(255, 220, 200, 0.06);
+  --border-strong: rgba(255, 165, 80, 0.22);
+  --text-hi: rgba(245, 240, 235, 0.96);
+  --text: rgba(220, 225, 222, 0.84);
+  --text-dim: rgba(180, 195, 192, 0.55);
+  --text-mono: rgba(255, 230, 200, 0.92);
+  --accent: #ff8a3a;
+  --accent-soft: rgba(255, 138, 58, 0.62);
+  --accent-glow: rgba(255, 138, 58, 0.35);
+  --violet: #2fd9c8;
+  --violet-soft: rgba(47, 217, 200, 0.55);
+  --track: rgba(255, 255, 255, 0.05);
+  --track-fill: linear-gradient(90deg, rgba(255, 138, 58, 0.85), rgba(47, 217, 200, 0.85));
+  --shadow-deep: 0 14px 38px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.45);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#canvas-container { position: fixed; inset: 0; z-index: 0; }
+#canvas-container canvas { display: block; width: 100%; height: 100%; }
+
+#ui-root { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+#ui-root > * { pointer-events: auto; }
+
+.iso-build-console {
+  position: fixed;
+  left: 14px;
+  bottom: 14px;
+  width: min(430px, calc(100vw - 28px));
+  padding: 7px 9px 8px;
+  border: 1px solid rgba(255, 180, 110, 0.12);
+  border-radius: 6px;
+  background: rgba(5, 10, 13, 0.36);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  color: rgba(255, 238, 212, 0.9);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.35;
+  letter-spacing: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 500ms ease, background 180ms ease, transform 220ms ease;
+}
+.iso-build-console.boot {
+  width: min(520px, calc(100vw - 28px));
+  padding: 9px 11px 10px;
+  background: rgba(5, 10, 13, 0.58);
+  border-color: rgba(255, 180, 110, 0.18);
+}
+.iso-build-console.transition {
+  width: min(360px, calc(100vw - 28px));
+  padding: 5px 8px 6px;
+  background: rgba(5, 10, 13, 0.62);
+}
+.iso-build-console.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.iso-build-console.active {
+  opacity: 1;
+  background: rgba(5, 10, 13, 0.72);
+}
+.iso-build-console.boot.visible { opacity: 1; }
+.iso-build-console.boot.active { opacity: 1; background: rgba(5, 10, 13, 0.74); }
+.iso-build-console.transition .iso-build-lines { display: none; }
+.iso-build-console.transition .iso-build-track { margin-bottom: 0; }
+.iso-build-row {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+.iso-build-spin {
+  display: inline-block;
+  color: rgba(255, 157, 77, 1);
+  text-align: center;
+}
+.iso-build-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.iso-build-time { color: rgba(255, 245, 225, 0.74); }
+.iso-build-track {
+  height: 2px;
+  margin: 5px 0 4px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.055);
+}
+.iso-build-track i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(255, 149, 62, 1), rgba(77, 245, 226, 0.96));
+  box-shadow: 0 0 8px rgba(255, 138, 58, 0.34);
+}
+.iso-build-lines {
+  min-height: 42px;
+  white-space: pre;
+  overflow: hidden;
+  color: rgba(230, 247, 240, 0.72);
+}
+
+.iso-godray-workshop {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  z-index: 30;
+  width: min(430px, calc(100vw - 24px));
+  padding: 12px 14px 13px;
+  border: 1px solid rgba(255, 160, 90, 0.32);
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, rgba(56, 33, 46, 0.84), rgba(7, 21, 30, 0.88)),
+    rgba(6, 10, 14, 0.84);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
+  color: rgba(255, 230, 200, 0.9);
+  font-family: var(--font-mono);
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  transition: transform 220ms cubic-bezier(0.32, 0.72, 0.16, 1), opacity 200ms;
+  transform-origin: left center;
+}
+.iso-godray-workshop.collapsed {
+  transform: translateX(calc(-100% - 24px));
+  opacity: 0;
+  pointer-events: none;
+}
+.iso-godray-workshop,
+.iso-godray-workshop * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.iso-godray-title {
+  margin-bottom: 10px;
+  color: rgba(255, 226, 196, 0.86);
+  letter-spacing: 0.12em;
+  font-size: 14px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  cursor: default;
+  pointer-events: none;
+}
+.iso-godray-recipes {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  margin-top: 0;
+}
+.iso-godray-recipe {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 27px;
+  min-width: 0;
+  border: 1px solid rgba(255, 160, 90, 0.34);
+  border-radius: 5px;
+  background: rgba(12, 19, 25, 0.86);
+  color: rgba(224, 231, 230, 0.74);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: color 120ms, border-color 120ms, background 120ms, box-shadow 120ms, transform 80ms;
+}
+.iso-godray-recipe:hover {
+  color: rgba(245, 248, 246, 0.96);
+  border-color: rgba(255, 200, 140, 0.68);
+  background: rgba(18, 27, 34, 0.94);
+}
+.iso-godray-recipe:focus-visible {
+  outline: 1px solid rgba(255, 220, 170, 0.82);
+  outline-offset: 1px;
+}
+.iso-godray-recipe.active {
+  color: #101419;
+  border-color: rgba(255, 214, 150, 0.95);
+  background: linear-gradient(180deg, #ffd9a0, #ff9326);
+  text-shadow: none;
+  box-shadow: 0 0 9px rgba(255, 147, 38, 0.42);
+}
+.iso-godray-note {
+  min-height: 36px;
+  margin-top: 11px;
+  overflow: hidden;
+  color: rgba(230, 236, 230, 0.74);
+  font-size: 14px;
+  line-height: 1.28;
+  cursor: default;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+.iso-godray-debug {
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(255, 160, 90, 0.18);
+}
+.iso-godray-debug-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: rgba(255, 226, 196, 0.62);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.iso-godray-blur-toggle {
+  min-width: 42px;
+  height: 20px;
+  padding: 0 7px;
+  border: 1px solid rgba(255, 160, 90, 0.45);
+  border-radius: 4px;
+  background: rgba(9, 16, 22, 0.88);
+  color: rgba(224, 231, 230, 0.74);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.iso-godray-blur-toggle.on {
+  color: #101419;
+  border-color: rgba(255, 214, 150, 0.95);
+  background: linear-gradient(180deg, #ffd9a0, #ff9326);
+  box-shadow: 0 0 9px rgba(255, 147, 38, 0.38);
+}
+.iso-godray-debug-row {
+  display: grid;
+  grid-template-columns: 76px 1fr 44px;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+  color: rgba(218, 226, 224, 0.7);
+  font-size: 12px;
+  line-height: 1;
+}
+.iso-godray-debug-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.iso-godray-debug-value {
+  color: rgba(255, 226, 196, 0.72);
+  text-align: right;
+  pointer-events: none;
+}
+.iso-godray-debug-row input {
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  accent-color: #ff9b45;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  outline: none;
+}
+.iso-godray-debug-row input:focus,
+.iso-godray-debug-row input:focus-visible,
+.iso-godray-blur-toggle:focus,
+.iso-godray-blur-toggle:focus-visible {
+  outline: none;
+}
+.iso-godray-debug-row input::-moz-focus-outer {
+  border: 0;
+}
+.iso-godray-debug-row input::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background:
+    linear-gradient(90deg, rgba(255, 138, 58, 0.8), rgba(255, 138, 58, 0.8)) 0 / var(--iso-pct, 0%) 100% no-repeat,
+    rgba(255, 255, 255, 0.08);
+}
+.iso-godray-debug-row input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 1px solid rgba(255, 230, 190, 0.82);
+  border-radius: 50%;
+  background: #ff9b45;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+.iso-godray-debug-row input::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.iso-godray-debug-row input::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 138, 58, 0.8);
+}
+.iso-godray-debug-row input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(255, 230, 190, 0.82);
+  border-radius: 50%;
+  background: #ff9b45;
+}
+
+::selection { background: rgba(255, 138, 58, 0.35); color: white; }
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+input { font-family: inherit; color: inherit; }

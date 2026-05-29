@@ -1,0 +1,8 @@
+.sky-clouds-perf {
+  top: 42px;
+  left: 14px;
+  padding: 5px 8px;
+  background: rgba(6, 11, 17, 0.58);
+  border-color: rgba(255, 149, 72, 0.16);
+  border-radius: 5px;
+}

@@ -1,0 +1,735 @@
+/* ---- Side panel ---- */
+/* Ported verbatim from sunset/src/ui/panel.css (itself from fractal-fire).
+   Same visual identity — orange→aqua accent, glass-blur side panel — kept
+   intentionally so the project feels of-a-piece. Section label gradients
+   recolored for the island's sun / atmosphere / terrain / season themes. */
+
+.ff-panel {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  bottom: 24px;                 /* lifted — reveals more ocean below */
+  width: 349px;                 /* 3% narrower */
+  display: flex;
+  flex-direction: column;
+  /* No background / blur on the container itself: the header becomes a
+     genuinely see-through notch onto the scene. The glass + blur lives on
+     the body and footer instead (see below). */
+  background: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  box-shadow: var(--shadow-deep);
+  overflow: hidden;
+  /* Nothing in the panel is selectable — dragging the camera over it must
+     never turn the cursor into a text I-beam or highlight labels. */
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 220ms cubic-bezier(0.32, 0.72, 0.16, 1), opacity 200ms;
+  transform-origin: right center;
+}
+
+.ff-panel.collapsed {
+  transform: translateX(calc(100% + 24px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 520px) {
+  .ff-panel {
+    top: 96px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+}
+
+/* 100% transparent see-through strip — same height as before (sections do
+   NOT move up), but the scene shows through and pointer events pass to the
+   canvas behind it so drag-look works here too. */
+.ff-panel-header {
+  flex: 0 0 auto;
+  padding: 6px 14px 5px;
+  border-bottom: none;
+  background: none;
+  min-height: 10px;
+  pointer-events: none;
+}
+
+.ff-panel-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+.ff-panel-title-main {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text-hi);
+  background: linear-gradient(120deg, #ff8a3a, #2fd9c8 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ff-panel-title-sub {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.ff-panel-status {
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(226, 232, 230, 0.94);
+  height: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* crisp hard outline — NO blur radius — so the text stays sharp over the
+     live scene that shows through the transparent header (a soft shadow
+     read as "blurry" when the terrain/light behind it changed) */
+  text-shadow:
+    0 0 1px rgba(0, 0, 0, 0.92),
+    1px 0 0 rgba(0, 0, 0, 0.55), -1px 0 0 rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(0, 0, 0, 0.55), 0 -1px 0 rgba(0, 0, 0, 0.55);
+}
+.ff-panel-status.ok { color: rgba(140, 220, 140, 0.85); }
+.ff-panel-status.err { color: rgba(255, 120, 120, 0.95); }
+
+.ff-panel-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0 8px;
+  /* glass lives here now (not on .ff-panel) so the header stays see-through */
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 165, 80, 0.18) transparent;
+}
+.ff-panel-body::-webkit-scrollbar { width: 6px; }
+.ff-panel-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 165, 80, 0.18);
+  border-radius: 3px;
+}
+.ff-panel-body::-webkit-scrollbar-track { background: transparent; }
+
+/* ---- Section ---- */
+
+.ff-section { border-bottom: 1px solid var(--border-soft); }
+.ff-section:last-child { border-bottom: none; }
+
+.ff-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* extra left padding so the identity bar isn't crowding the glyph */
+  padding: 9px 16px 9px 22px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 140ms;
+  position: relative;
+  /* per-category background wash — the whole header band carries the
+     category colour so sections read as distinct blocks, not a flat list */
+  background: linear-gradient(90deg, var(--label-wash, transparent) 0%, transparent 62%);
+}
+/* Always-visible category identity bar — full-height, squared (less
+   vibe-codey), solid colour pulled from the section accent. */
+.ff-section-head::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 0;
+  background: var(--label-bar, var(--accent-soft, #ccc));
+}
+.ff-section.open > .ff-section-head {
+  background: linear-gradient(90deg, var(--label-wash-strong, var(--label-wash, transparent)) 0%, transparent 70%);
+}
+.ff-section-head:hover { filter: brightness(1.18); }
+.ff-section-icon {
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--accent-soft);
+  filter: drop-shadow(0 0 5px var(--accent-glow));
+}
+.ff-section-label {
+  font-size: 14.5px;          /* larger — same weight */
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  flex: 1 1 auto;
+  background-image: var(--label-gradient, linear-gradient(110deg, #fff 0%, #ddd 100%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Per-section identity: text gradient + solid bar colour + header wash.
+   voxel gets a serious scarlet→red — it is the structural, never-randomized
+   category and should not read as "just another row". */
+.ff-section[data-section="sun"]        { --label-gradient: linear-gradient(110deg, #ffe070 0%, #ff8a3a 50%, #ff5a5a 100%); --label-bar: #ff8a3a; --label-wash: rgba(255,138,58,0.07);  --label-wash-strong: rgba(255,138,58,0.13); }
+.ff-section[data-section="atmosphere"] { --label-gradient: linear-gradient(110deg, #4ad0ff 0%, #2fd9c8 50%, #ff8a3a 100%); --label-bar: #2fd9c8; --label-wash: rgba(47,217,200,0.06);  --label-wash-strong: rgba(47,217,200,0.12); }
+.ff-section[data-section="voxel"]      { --label-gradient: linear-gradient(110deg, #ff5141 0%, #e21800 55%, #b00d00 100%); --label-bar: #e51d0e; --label-wash: rgba(230,29,14,0.13);  --label-wash-strong: rgba(230,29,14,0.22); }
+.ff-section[data-section="island"]     { --label-gradient: linear-gradient(110deg, #6abc78 0%, #b0cc66 50%, #e8cf94 100%); --label-bar: #7cc07f; --label-wash: rgba(120,196,128,0.07); --label-wash-strong: rgba(120,196,128,0.13); }
+.ff-section[data-section="seasons"]    { --label-gradient: linear-gradient(110deg, #6fce4a 0%, #e6b800 45%, #bfe9f0 100%); --label-bar: #7fd24a; --label-wash: rgba(111,206,74,0.07);  --label-wash-strong: rgba(111,206,74,0.13); }
+.ff-section[data-section="water"]      { --label-gradient: linear-gradient(110deg, #2fd9c8 0%, #137a8c 55%, #0a4e6e 100%); --label-bar: #1ba0c0; --label-wash: rgba(27,160,192,0.07);  --label-wash-strong: rgba(27,160,192,0.13); }
+.ff-section[data-section="waves"]      { --label-gradient: linear-gradient(110deg, #70f8ff 0%, #2fd9c8 46%, #ff8a3a 100%); --label-bar: #2fd9c8; --label-wash: rgba(47,217,200,0.07);  --label-wash-strong: rgba(47,217,200,0.13); }
+.ff-section[data-section="chaos"]      { --label-gradient: linear-gradient(110deg, #d4ff31 0%, #70f8ff 46%, #ff8a3a 100%); --label-bar: #a6ff26; --label-wash: rgba(166,255,38,0.06); --label-wash-strong: rgba(166,255,38,0.12); }
+.ff-section[data-section="lod"]        { --label-gradient: linear-gradient(110deg, #c9d4dd 0%, #70f8ff 48%, #7aa2ff 100%); --label-bar: #70a8ff; --label-wash: rgba(112,168,255,0.055); --label-wash-strong: rgba(112,168,255,0.11); }
+.ff-section[data-section="lighting"]   { --label-gradient: linear-gradient(110deg, #fff1c2 0%, #ffd166 50%, #ff9e3d 100%); --label-bar: #ffcf6a; --label-wash: rgba(255,206,106,0.08); --label-wash-strong: rgba(255,206,106,0.14); }
+.ff-section[data-section="render"]     { --label-gradient: linear-gradient(110deg, #a8b2bc 0%, #ecf0f4 50%, #889098 100%); --label-bar: #aab4be; --label-wash: rgba(170,180,190,0.05); --label-wash-strong: rgba(170,180,190,0.09); }
+
+.ff-section-blurb {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  font-style: italic;
+  display: none;
+}
+.ff-section-chevron {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 180ms;
+}
+.ff-section.open .ff-section-chevron { transform: rotate(90deg); }
+
+.ff-section-body { display: none; padding: 2px 16px 10px; }
+.ff-section.open > .ff-section-body { display: block; }
+.ff-section.open > .ff-section-head .ff-section-blurb { display: block; }
+
+/* ---- Field rows ---- */
+
+.ff-field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+.ff-field-label { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ff-field-name {
+  font-size: 11.5px;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: baseline;
+}
+/* Fixed-width pin gutter so ◇ vs ◆ (and toggling) never shifts the label. */
+.ff-sticky {
+  flex: 0 0 auto;
+  width: 14px;
+  text-align: center;
+  font-size: 12.5px;
+  line-height: 1;
+  margin-right: 7px;
+  padding: 0;
+  color: rgba(205, 210, 214, 0.55);          /* hollow white/grey when unpinned */
+  transition: color 120ms, text-shadow 120ms;
+  vertical-align: middle;
+}
+.ff-sticky:hover { color: rgba(235, 240, 245, 0.95); }
+/* pinned: bright lime, yellow outline, roll-friendly */
+.ff-sticky.on {
+  color: #9bff34;
+  -webkit-text-stroke: 0.6px #ffe000;
+  text-shadow: 0 0 7px rgba(155, 255, 52, 0.7);
+}
+/* structural (voxel.*): amber — pinning these is a deliberate, major act */
+.ff-sticky.major.on {
+  color: #ff9326;
+  -webkit-text-stroke: 0.5px #ffce7a;
+  text-shadow: 0 0 7px rgba(255, 140, 40, 0.65);
+}
+.ff-field-hint { font-size: 10px; color: var(--text-dim); font-style: italic; }
+.ff-field-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mono);
+  text-align: right;
+  min-width: 60px;
+  white-space: nowrap;
+}
+.ff-field-control { grid-column: 1 / -1; margin-top: 2px; }
+
+/* ---- Slider (single value) ---- */
+
+.ff-slider { position: relative; height: 18px; display: flex; align-items: center; }
+.ff-slider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent-soft) var(--ff-pct, 0%), var(--track) var(--ff-pct, 0%));
+  outline: none;
+  transition: filter 120ms;
+}
+.ff-slider input[type="range"]:focus,
+.ff-slider input[type="range"]:focus-visible,
+.ff-range input[type="range"]:focus,
+.ff-range input[type="range"]:focus-visible {
+  outline: none;
+}
+.ff-slider input[type="range"]::-moz-focus-outer,
+.ff-range input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+.ff-slider input[type="range"]:hover { filter: brightness(1.18); }
+.ff-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffb070, #ff8a3a);
+  border: 1px solid rgba(255, 220, 200, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 10px var(--accent-glow);
+  cursor: grab;
+  transition: transform 120ms;
+}
+.ff-slider input[type="range"]:active::-webkit-slider-thumb { cursor: grabbing; transform: scale(1.12); }
+.ff-slider input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffb070, #ff8a3a);
+  border: 1px solid rgba(255, 220, 200, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 10px var(--accent-glow);
+  cursor: grab;
+}
+
+/* ---- Range slider (dual thumb) ---- */
+
+.ff-range { position: relative; height: 18px; display: flex; align-items: center; }
+.ff-range-track {
+  position: absolute;
+  inset: 7px 0 7px 0;
+  height: 4px;
+  background: var(--track);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.ff-range-fill {
+  position: absolute;
+  height: 100%;
+  background: var(--track-fill);
+  border-radius: 2px;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(255, 138, 58, 0.18);
+}
+.ff-range input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  outline: none;
+}
+.ff-range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffb070, #ff8a3a);
+  border: 1px solid rgba(255, 220, 200, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 10px var(--accent-glow);
+  cursor: grab;
+  position: relative;
+  z-index: 2;
+}
+.ff-range input[type="range"]:active::-webkit-slider-thumb { cursor: grabbing; }
+.ff-range input[type="range"]:nth-child(2)::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #6fe0d2, #2fd9c8);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 10px rgba(47, 217, 200, 0.45);
+}
+.ff-range.ff-range-ticks input[type="range"]::-webkit-slider-thumb {
+  width: 5px;
+  height: 18px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffd19a, #ff8a3a);
+  border: 1px solid rgba(255, 225, 190, 0.62);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 0 9px rgba(255, 138, 58, 0.45);
+}
+.ff-range.ff-range-ticks input[type="range"]:nth-child(2)::-webkit-slider-thumb {
+  background: linear-gradient(180deg, #ffd19a, #ff8a3a);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 0 9px rgba(255, 138, 58, 0.45);
+}
+.ff-range input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffb070, #ff8a3a);
+  border: 1px solid rgba(255, 220, 200, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 10px var(--accent-glow);
+}
+.ff-range.ff-range-ticks input[type="range"]::-moz-range-thumb {
+  width: 5px;
+  height: 18px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffd19a, #ff8a3a);
+  border: 1px solid rgba(255, 225, 190, 0.62);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 0 9px rgba(255, 138, 58, 0.45);
+}
+
+/* ---- Toggle ---- */
+
+.ff-toggle {
+  position: relative;
+  width: 32px; height: 18px;
+  border-radius: 9px;
+  background: var(--track);
+  cursor: pointer;
+  transition: background 180ms;
+  display: inline-block;
+}
+.ff-toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: rgba(220, 220, 230, 0.6);
+  transition: transform 180ms, background 180ms, box-shadow 180ms;
+}
+.ff-toggle.on { background: rgba(255, 138, 58, 0.32); }
+.ff-toggle.on::after {
+  transform: translateX(14px);
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ---- Footer actions ---- */
+
+.ff-panel-footer {
+  flex: 0 0 auto;
+  padding: 6px 9px 5px;
+  border-top: 1px solid var(--border-soft);
+  /* glass lives here now too (panel container is transparent) */
+  background:
+    linear-gradient(0deg, rgba(47, 217, 200, 0.045), transparent),
+    var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ff-btn-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+.ff-btn-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+
+/* Wave preset strip — workshop-only when supplied. It intentionally reads as
+   a small instrument bank above the full scene A-H preset matrix. */
+.ff-wave-presets {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(47, 217, 200, 0.10);
+}
+.ff-wave-preset {
+  position: relative;
+  height: 18px;
+  border-radius: 2px;
+  border: 1px solid rgba(47, 217, 200, 0.28);
+  background-color: rgba(5, 14, 20, 0.72);
+  background-position: center;
+  background-size: cover;
+  color: rgba(218, 228, 228, 0.72);
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow 140ms, border-color 140ms, transform 80ms;
+}
+.ff-wave-preset:not(.filled) { border-style: dashed; opacity: 0.62; }
+.ff-wave-preset.filled { border-color: rgba(112, 248, 255, 0.38); }
+.ff-wave-preset.active {
+  border-color: rgba(255, 206, 122, 0.95);
+  box-shadow: 0 0 8px rgba(255, 147, 38, 0.35), inset 0 0 0 1px rgba(255, 220, 180, 0.42);
+}
+.ff-wave-preset:hover {
+  border-color: rgba(255, 200, 140, 0.65);
+  box-shadow: inset 0 0 0 1px rgba(255, 220, 180, 0.35);
+  transform: translateY(-1px);
+}
+.ff-wave-preset-num {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(225, 236, 236, 0.72);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.92);
+  pointer-events: none;
+}
+.ff-wave-preset.active .ff-wave-preset-num { color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.92); }
+
+/* Preset slots — 1 2 3 4 / 5 6 7 8. Filled slots carry a gradient sampled
+   from their own params; empty slots are faint + dashed. */
+/* Bank selector A–H — one tight row; the active bank glows. */
+.ff-banks {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+}
+.ff-bank {
+  height: 15px;
+  border-radius: 2px;
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(210, 216, 220, 0.55);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 120ms, border-color 120ms, background 120ms, box-shadow 120ms;
+}
+.ff-bank:hover { color: rgba(235, 240, 245, 0.9); border-color: rgba(255, 200, 140, 0.45); }
+.ff-bank.active {
+  color: #0c1117;
+  background: linear-gradient(180deg, #ffd9a0, #ff9326);
+  border-color: rgba(255, 206, 122, 0.9);
+  box-shadow: 0 0 8px rgba(255, 147, 38, 0.45);
+}
+
+/* Preset slots 1–8 of the active bank — shrunk ~50% (one row of 8). Each
+   filled slot is a tiny sky/land/water postcard; number is a corner badge. */
+.ff-presets {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  margin-top: 3px;
+}
+.ff-preset {
+  position: relative;
+  height: 22px;
+  border-radius: 2px;
+  border: 1px solid var(--border-strong);
+  background-color: rgba(255, 255, 255, 0.03);
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow 140ms, border-color 140ms, transform 80ms;
+}
+.ff-preset:not(.filled) { border-style: dashed; }
+.ff-preset.filled { border-color: rgba(255, 255, 255, 0.22); }
+.ff-preset-num {
+  position: absolute;
+  top: 0;
+  left: 1px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 1.2;
+  color: rgba(225, 230, 235, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+.ff-preset.filled .ff-preset-num { color: #fff; font-weight: 700; }
+.ff-preset:hover {
+  border-color: rgba(255, 200, 140, 0.65);
+  box-shadow: inset 0 0 0 1px rgba(255, 220, 180, 0.4);
+  transform: translateY(-1px);
+}
+
+.ff-btn {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-strong);
+  color: var(--text-hi);
+  cursor: pointer;
+  transition: background 140ms, border-color 140ms, transform 80ms, box-shadow 140ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ff-btn:hover {
+  background: rgba(255, 138, 58, 0.10);
+  border-color: rgba(255, 165, 80, 0.40);
+  box-shadow: 0 0 18px rgba(255, 138, 58, 0.10);
+}
+.ff-btn:active { transform: translateY(1px); }
+.ff-btn.ff-mini {
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(180, 190, 195, 0.62);
+  border-color: rgba(255, 165, 80, 0.14);
+  background: rgba(255, 255, 255, 0.025);
+}
+.ff-btn.ff-mini:hover {
+  color: rgba(220, 225, 230, 0.85);
+  border-color: rgba(255, 165, 80, 0.32);
+  background: rgba(255, 138, 58, 0.06);
+  box-shadow: none;
+}
+.ff-btn.ff-mini.active {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+  background: rgba(255, 138, 58, 0.12);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.ff-cycle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px 9px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 165, 80, 0.18);
+  background: rgba(10, 16, 22, 0.78);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 80ms, border-color 160ms, background 160ms;
+}
+.ff-cycle:hover {
+  border-color: rgba(255, 165, 80, 0.40);
+  background: rgba(14, 20, 26, 0.84);
+  box-shadow: none;
+}
+.ff-cycle-label {
+  flex: 1 1 auto;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: linear-gradient(120deg, #ff8a3a, #2fd9c8 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ff-cycle-strip {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 4px;
+  height: 2.5px;
+  border-radius: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0a4e6e, #137a8c, #2fd9c8, #e8cf94, #6fce4a);
+}
+
+/* ---- Open-handle button when panel is collapsed ---- */
+
+.ff-panel-handle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
+  border-radius: 4px;
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--accent);
+  cursor: pointer;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: opacity 200ms, transform 220ms cubic-bezier(0.32, 0.72, 0.16, 1);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(40px) scale(0.85);
+  box-shadow: var(--shadow-deep);
+}
+.ff-panel-handle.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+.ff-panel-handle:hover {
+  background: rgba(255, 138, 58, 0.16);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+/* ---- Perf overlay ---- */
+
+.ff-perf {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  padding: 8px 12px;
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-mono);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2px 12px;
+  letter-spacing: 0.02em;
+  transition: opacity 200ms;
+  pointer-events: none;
+}
+.ff-perf * { pointer-events: none; }
+.ff-perf.hidden { opacity: 0; }
+.ff-perf-key { color: var(--text-dim); }
+.ff-perf-val { color: var(--text-mono); text-align: right; }
+.ff-perf-val.warn { color: rgba(255, 200, 130, 0.95); }
+.ff-perf-val.bad { color: rgba(255, 120, 120, 0.95); }
+
+/* ---- Hint pill ---- */
+
+/* Barely-there control hint, lower-left. No chrome at all. */
+.ff-hints {
+  position: fixed;
+  bottom: 9px;
+  left: 11px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(200, 210, 215, 0.20);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  user-select: none;
+  display: none;
+}
+.ff-hints.show { display: block; }
+.ff-hints kbd {
+  display: inline;
+  padding: 0;
+  margin: 0 2px 0 5px;
+  background: none;
+  border: 0;
+  color: rgba(210, 220, 225, 0.34);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}

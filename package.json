@@ -1,0 +1,26 @@
+{
+  "name": "sunset-sky",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Disposable sunset-first Takram clouds fork. See SUNSET_SKY_HANDOFF.md.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 57210 --strictPort",
+    "build": "vite build",
+    "smoke": "node scripts/smoke-workshop.mjs",
+    "preview": "vite preview --host 127.0.0.1 --port 57210"
+  },
+  "dependencies": {
+    "@takram/three-atmosphere": "^0.19.1",
+    "@takram/three-clouds": "^0.7.6",
+    "@takram/three-geospatial": "^0.9.1",
+    "postprocessing": "^6.39.1",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "playwright": "^1.60.0",
+    "vite": "^6.0.0"
+  },
+  "//": "Phase-2 deps added when this lab reaches that phase: postprocessing ^6.36.7, @takram/three-clouds, @takram/three-atmosphere, @takram/three-geospatial."
+}

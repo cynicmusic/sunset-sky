@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.vite/
+
+# Lab-only output (screenshots, diagnostic dumps)
+/tmp-shots/
+*.local.json
