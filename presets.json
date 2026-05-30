@@ -61,6 +61,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -137,6 +154,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -198,7 +232,7 @@
       "render": {
         "fov": 68,
         "exposure": 1.05,
-        "fogDensity": 0.00072,
+        "fogDensity": 0.0002,
         "horizonWarp": true
       },
       "cloudFinishing": {
@@ -213,6 +247,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -274,7 +325,7 @@
       "render": {
         "fov": 68,
         "exposure": 1.05,
-        "fogDensity": 0.00072,
+        "fogDensity": 0.0002,
         "horizonWarp": true
       },
       "cloudFinishing": {
@@ -289,6 +340,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -368,6 +436,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -447,6 +532,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -526,6 +628,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -605,6 +724,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -878,6 +1014,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -957,6 +1104,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -1050,6 +1214,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -1359,13 +1540,13 @@
       "atmosphereBridge": {
         "enable": true,
         "amount": 0.35,
-        "violetBias": -0.52,
-        "redBias": 0.56,
-        "legacyMix": 0.77,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
         "saturation": 1.08,
-        "lift": 0.185,
-        "horizonBias": 0,
-        "depthStart": 0.883
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -1475,6 +1656,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -1584,6 +1782,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -1857,6 +2072,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -2085,11 +2311,11 @@
         "forceBelowHorizonFog": false
       },
       "atmosphereBridge": {
-        "enable": false,
+        "enable": true,
         "amount": 0.35,
+        "legacyMix": 1,
         "violetBias": 0.2,
         "redBias": 0,
-        "legacyMix": 1,
         "saturation": 1.08,
         "lift": 0.03,
         "horizonBias": 0.4,
@@ -2148,7 +2374,7 @@
       "cloudsRender": {
         "exposure": 10,
         "mode": 0,
-        "atmosphere": false,
+        "atmosphere": true,
         "clouds": true,
         "aerialPerspective": true,
         "quality": 2,
@@ -2443,7 +2669,7 @@
       "cloudsRender": {
         "exposure": 10,
         "mode": 0,
-        "atmosphere": false,
+        "atmosphere": true,
         "clouds": true,
         "aerialPerspective": true,
         "quality": 2,
@@ -2478,6 +2704,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -2748,7 +2985,7 @@
       "cloudsRender": {
         "exposure": 5,
         "mode": 0,
-        "atmosphere": false,
+        "atmosphere": true,
         "clouds": true,
         "aerialPerspective": true,
         "quality": 2,
@@ -2783,6 +3020,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -3053,7 +3301,7 @@
       "cloudsRender": {
         "exposure": 10,
         "mode": 0,
-        "atmosphere": false,
+        "atmosphere": true,
         "clouds": true,
         "aerialPerspective": true,
         "quality": 2,
@@ -3088,6 +3336,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -3197,6 +3456,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -3306,6 +3582,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -3536,9 +3829,9 @@
       "atmosphereBridge": {
         "enable": true,
         "amount": 0.35,
+        "legacyMix": 1,
         "violetBias": 0.2,
         "redBias": 0,
-        "legacyMix": 1,
         "saturation": 1.08,
         "lift": 0.03,
         "horizonBias": 0.4,
@@ -3597,7 +3890,7 @@
       "cloudsRender": {
         "exposure": 10,
         "mode": 0,
-        "atmosphere": false,
+        "atmosphere": true,
         "clouds": true,
         "aerialPerspective": true,
         "quality": 2,
@@ -3895,6 +4188,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -4007,6 +4311,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -4119,6 +4440,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -4231,6 +4569,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -4343,6 +4698,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -4644,6 +5016,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -4945,6 +5328,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -5246,6 +5640,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -5547,6 +5952,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -5848,6 +6264,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -5964,6 +6391,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6080,6 +6524,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6196,6 +6657,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6312,6 +6790,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6428,6 +6923,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6544,6 +7056,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6660,6 +7189,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6776,6 +7322,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -6892,6 +7455,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7008,6 +7588,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7124,6 +7721,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7240,6 +7854,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7356,6 +7987,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7484,6 +8132,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7612,6 +8277,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7740,6 +8422,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -7868,6 +8567,23 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
+      "cloudsRender": {
+        "mode": 0,
+        "atmosphere": true,
+        "aerialPerspective": true,
+        "clouds": true
       }
     },
     "cam": {
@@ -8141,6 +8857,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -8414,6 +9141,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -8687,6 +9425,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -8960,6 +9709,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -9233,6 +9993,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -9534,6 +10305,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -9835,6 +10617,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -10140,6 +10933,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -10445,6 +11249,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {
@@ -10750,6 +11565,17 @@
         "azimuthOffsetDeg": 0,
         "terrainAmount": 1,
         "treeAmount": 1
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "legacyMix": 1,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       }
     },
     "cam": {

@@ -27,9 +27,10 @@ const workshopPresetLabel = 'sunset-sky';
 
 const schema = makeWorkshopSchema();
 const tuningSections = ['waves'];
-const cloudSections = ['cloudsRender', 'takramAtmosphere', 'atmosphereBridge', 'cloudWeather', 'cloudLayer0', 'cloudLighting', 'cloudShadows', 'cloudDebug'];
-const sectionOrder = ['skyDiagnosis', 'gain', ...cloudSections, 'water', 'waves', 'sun', 'atmosphere', 'lighting', 'sunsetLighting', 'island', 'lagoon', 'voxel', 'seasons', 'tree', 'shadows', 'render'];
+const cloudSections = ['takramAtmosphere', 'cloudsRender', 'cloudWeather', 'cloudLayer0', 'cloudLighting', 'cloudShadows'];
+const sectionOrder = ['gain', ...cloudSections, 'water', 'waves', 'sun', 'atmosphereBridge', 'atmosphere', 'lighting', 'sunsetLighting', 'island', 'lagoon', 'voxel', 'seasons', 'tree', 'shadows', 'render', 'cloudDebug'];
 const workshopDefaults = buildDefaults(schema, defaultParams);
+enforceCanonicalTakramPath(workshopDefaults);
 
 const buildConsole = new BuildConsole({ parent: uiRoot, label: `${workshopName} build` });
 buildConsole.start('bootstrap', 6, { mode: 'boot' });
@@ -199,7 +200,11 @@ if (store.get('skyDiagnosis.fastSkyBoot')) {
 }
 
 store.subscribe((evt) => {
-  if (evt.path === 'cloudsRender.mode') applyCloudMode(evt.value);
+  if (evt.path === 'cloudsRender.mode' ||
+      evt.path === 'cloudsRender.atmosphere' ||
+      evt.path === 'cloudsRender.aerialPerspective') {
+    enforceCanonicalTakramStore();
+  }
   if (evt.path === '*' || shouldResetTakramHistory(evt.path)) {
     takramRig.resetTemporalState();
   }
@@ -234,26 +239,25 @@ function randomize() {
   }
 }
 
-function applyCloudMode(mode) {
-  const takramReference = Math.round(mode ?? 0) === 0;
-  const values = takramReference ? {
+function enforceCanonicalTakramStore() {
+  const values = {
+    'cloudsRender.mode': 0,
     'cloudsRender.atmosphere': true,
-    'cloudsRender.clouds': true,
     'cloudsRender.aerialPerspective': true,
-    'cloudsRender.exposure': 10,
-    'cloudFinishing.toneMapping': 0,
-    'cloudFinishing.dithering': true,
-  } : {
-    'cloudsRender.atmosphere': false,
-    'cloudsRender.clouds': true,
-    'cloudsRender.aerialPerspective': false,
-    'cloudsRender.exposure': 1.05,
-    'cloudFinishing.toneMapping': 0,
-    'cloudFinishing.dithering': false,
   };
   for (const [path, value] of Object.entries(values)) {
     if (store.get(path) !== value) store.set(path, value);
   }
+}
+
+function enforceCanonicalTakramPath(target) {
+  if (!target || typeof target !== 'object') return target;
+  const render = (target.cloudsRender ??= {});
+  render.mode = 0;
+  render.atmosphere = true;
+  render.aerialPerspective = true;
+  if (render.clouds === undefined) render.clouds = true;
+  return target;
 }
 
 function seaStyleParams() {
@@ -298,9 +302,9 @@ window.addEventListener('keydown', (event) => {
     panel.flashStatus(next ? 'water on' : 'water off', 'ok');
   } else if (key === 't') {
     event.preventDefault(); blur();
-    const next = !store.get('cloudsRender.atmosphere');
-    store.set('cloudsRender.atmosphere', next);
-    panel.flashStatus(next ? 'takram sky on' : 'takram sky off', 'ok');
+    const next = !store.get('cloudsRender.clouds');
+    store.set('cloudsRender.clouds', next);
+    panel.flashStatus(next ? 'cloud layer on' : 'cloud layer off', 'ok');
   } else if (key === 'g') {
     event.preventDefault(); blur();
     const next = !store.get('godrays.enable');
@@ -462,7 +466,7 @@ function makeWorkshopSchema() {
       },
       atmosphereBridgeEnable: {
         path: 'atmosphereBridge.enable',
-        type: 'bool', label: 'Tint bridge', default: false,
+        type: 'bool', label: 'Tint bridge', default: true,
         hint: 'atmosphereBridge.enable',
       },
       atmosphereBridgeAmount: {
@@ -506,7 +510,7 @@ function makeWorkshopSchema() {
       },
       horizonHaze: {
         path: 'render.fogDensity',
-        type: 'float', label: 'Horizon haze', min: 0, max: 0.006, step: 0.00005, default: 0.00072,
+        type: 'float', label: 'Horizon haze', min: 0, max: 0.0007, step: 0.00005, default: 0.0003,
         hint: 'render.fogDensity',
       },
       takramGroup: {
@@ -602,20 +606,13 @@ function makeWorkshopSchema() {
   out.cloudsRender = {
     label: 'clouds render',
     icon: '◎',
-    blurb: 'sky choice · clouds compositor · quality',
+    blurb: 'Takram compositor · quality',
     fields: {
-      mode: {
-        type: 'int', label: 'Mode', min: 0, max: 1, step: 1, default: 0,
-        labels: ['Takram ref', 'legacy sky'],
-        hint: 'switches between the faithful Takram sky/LUT stack and the legacy sim sky composite experiment',
-      },
-      atmosphere: { type: 'bool', label: 'Takram sky', default: true, hint: 'SkyMaterial fullscreen sky; off keeps the original sim sky' },
-      clouds: { type: 'bool', label: 'Cloud layer', default: true, hint: 'Takram CloudsEffect over whichever sky is visible' },
-      aerialPerspective: { type: 'bool', label: 'Takram haze', default: true, hint: 'Takram AerialPerspectiveEffect; off preserves the old sim color/lighting path' },
+      clouds: { type: 'bool', label: 'Cloud layer', default: true, hint: 'Takram CloudsEffect; sky and aerial perspective stay canonical' },
       quality: { type: 'int', label: 'Quality', min: 0, max: 3, step: 1, default: 2, labels: ['low', 'medium', 'high', 'ultra'] },
       resolutionScale: { type: 'float', label: 'Cloud res', min: 0.25, max: 1, step: 0.01, default: 0.75, hint: 'volumetric cloud render resolution scale' },
       temporalUpscale: { type: 'bool', label: 'Temporal upscale', default: true, hint: 'Takram 1/4-res temporal upscale path' },
-      exposure: { type: 'float', label: 'Exposure', min: 0.2, max: 20, step: 0.05, default: 10, hint: 'Takram composer exposure; legacy sky clouds follow render.exposure to preserve scene color' },
+      exposure: { type: 'float', label: 'Exposure', min: 0.2, max: 20, step: 0.05, default: 10, hint: 'Takram composer exposure' },
     },
   };
   out.takramAtmosphere = {
@@ -638,7 +635,7 @@ function makeWorkshopSchema() {
     icon: '◍',
     blurb: 'experimental pre-tonemap tint from Hillaire controls',
     fields: {
-      enable: { type: 'bool', label: 'Enable', default: false, hint: 'pre-tonemap depth-gated grade; removeable experiment' },
+      enable: { type: 'bool', label: 'Enable', default: true, hint: 'pre-tonemap depth-gated grade; removeable experiment' },
       amount: { type: 'float', label: 'Amount', min: 0, max: 1, step: 0.01, default: 0.35 },
       legacyMix: { type: 'float', label: 'Atmosphere drive', min: 0, max: 1, step: 0.01, default: 1, hint: 'how strongly Rayleigh/Mie/Ozone/Planet R steer the tint' },
       violetBias: { type: 'float', label: 'Violet bias', min: -1, max: 1, step: 0.01, default: 0.2 },
@@ -650,7 +647,7 @@ function makeWorkshopSchema() {
     },
   };
   out.cloudWeather = {
-    label: 'cloud weather',
+    label: 'clouds weather',
     icon: '☁',
     blurb: 'coverage · texture scale · drift',
     fields: {
@@ -730,9 +727,21 @@ function makeWorkshopSchema() {
       minStep: { type: 'float', label: 'Min step', min: 10, max: 300, step: 5, default: 80, unit: 'm' },
       maxStep: { type: 'float', label: 'Max step', min: 100, max: 2500, step: 25, default: 1000, unit: 'm' },
       rayDistance: { type: 'float', label: 'Ray distance', min: 20000, max: 220000, step: 5000, default: 120000, unit: 'm' },
+      skyDiagnosisGroup: {
+        type: 'group', label: 'sky diagnosis', icon: '◐', map: 'skyDiagnosis.*',
+        color: '#9aa7b4', wash: 'rgba(154, 167, 180, 0.11)',
+      },
+      skyOnly: { path: 'skyDiagnosis.skyOnly', type: 'bool', label: 'Sky only', default: false, hint: 'hide island, trees, sea, and floor' },
+      fastSkyBoot: { path: 'skyDiagnosis.fastSkyBoot', type: 'bool', label: 'Fast sky boot', default: false, hint: 'skip the slow voxel island build until this is on' },
+      hideIsland: { path: 'skyDiagnosis.hideIsland', type: 'bool', label: 'Hide island', default: false, hint: 'hide terrain, trees, and reference blocks while tuning sky/clouds' },
+      seaOnlyStub: { path: 'skyDiagnosis.seaOnlyStub', type: 'bool', label: 'Sea only', default: false, hint: 'hide sky and terrain; keep sea surface/floor' },
+      floorOnlyStub: { path: 'skyDiagnosis.floorOnlyStub', type: 'bool', label: 'Floor only', default: false, hint: 'hide sky, terrain, and sea surface; keep floor disc' },
+      magentaClear: { path: 'skyDiagnosis.magentaClear', type: 'bool', label: 'Magenta clear', default: false, hint: 'reveals uncovered pixels behind all rendered layers' },
+      disableHorizonWarp: { path: 'skyDiagnosis.disableHorizonWarp', type: 'bool', label: 'Disable warp', default: false, hint: 'forces unwarped sky-view LUT latitude mapping' },
+      forceBelowHorizonFog: { path: 'skyDiagnosis.forceBelowHorizonFog', type: 'bool', label: 'Below-horizon fog', default: false, hint: 'diagnostic fill for rays that hit the planet' },
     },
   };
-  const { exposure: _legacyRenderExposure, ...renderFields } = out.render.fields;
+  const { exposure: _legacyRenderExposure, horizonWarp: _horizonWarpControl, ...renderFields } = out.render.fields;
   out.render.fields = {
     toneMapping: {
       path: 'cloudFinishing.toneMapping',
@@ -848,6 +857,7 @@ function cloneScenePresetParams(params) {
     delete out.tree.palmSway;
   }
   if (out.water) delete out.water.referenceBlocks;
+  enforceCanonicalTakramPath(out);
   return out;
 }
 
@@ -866,6 +876,7 @@ function ensureWorkshopParams(target) {
       }
     }
   }
+  enforceCanonicalTakramPath(target);
 }
 
 function deepMerge(target, source) {

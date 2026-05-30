@@ -232,7 +232,7 @@ export const schema = {
     fields: {
       fov: { type: 'float', label: 'FOV', min: 40, max: 95, step: 1, default: 68, unit: '°' },
       exposure: { type: 'float', label: 'Exposure', min: 0.2, max: 3.0, step: 0.01, default: 1.05 },
-      fogDensity: { type: 'float', label: 'Horizon haze', min: 0, max: 0.006, step: 0.00005, default: 0.00072, hint: 'dissolves the bounded sea edge into the sky' },
+      fogDensity: { type: 'float', label: 'Horizon haze', min: 0, max: 0.0007, step: 0.00005, default: 0.0003, hint: 'dissolves the bounded sea edge into the sky' },
       horizonWarp: { type: 'bool', label: 'Horizon warp', default: true },
     },
   },
