@@ -26,9 +26,9 @@ const workshopTitle = 'Sunset Sky';
 const workshopPresetLabel = 'sunset-sky';
 
 const schema = makeWorkshopSchema();
-const tuningSections = ['waves'];
+const tuningSections = ['glow', 'waves'];
 const cloudSections = ['takramAtmosphere', 'cloudsRender', 'cloudWeather', 'cloudLayer0', 'cloudLighting', 'cloudShadows'];
-const sectionOrder = ['gain', ...cloudSections, 'water', 'waves', 'sun', 'atmosphereBridge', 'atmosphere', 'lighting', 'sunsetLighting', 'island', 'lagoon', 'voxel', 'seasons', 'tree', 'shadows', 'render', 'cloudDebug'];
+const sectionOrder = ['gain', ...cloudSections, 'water', 'glow', 'waves', 'sun', 'atmosphereBridge', 'atmosphere', 'lighting', 'sunsetLighting', 'island', 'lagoon', 'voxel', 'seasons', 'tree', 'shadows', 'render', 'cloudDebug'];
 const workshopDefaults = buildDefaults(schema, defaultParams);
 enforceCanonicalTakramPath(workshopDefaults);
 
@@ -783,12 +783,29 @@ function makeWorkshopSchema() {
       surfaceLift: { type: 'float', label: 'Surface lift', min: -1, max: 2, step: 0.02, default: 0.08, unit: 'm', hint: 'shore z-fighting diagnostic' },
       landMask: { type: 'float', label: 'Land mask', min: 0, max: 1, step: 0.02, default: 1, hint: 'fade water off generated land cells' },
       debugView: {
-        type: 'int', label: 'Debug view', min: 0, max: 5, step: 1, default: 0,
-        labels: ['final', 'depth', 'channel', 'wave', 'normal', 'land'],
+        type: 'int', label: 'Debug view', min: 0, max: 7, step: 1, default: 0,
+        labels: ['final', 'depth', 'channel', 'wave', 'normal', 'land', 'detail', 'shore glow'],
         hint: 'raw masks and procedural fields before art layering',
       },
       depthTint: { type: 'float', label: 'Depth tint', min: 0, max: 1.5, step: 0.02, default: 0.78, hint: 'absorption/fog amount from generated seafloor depth' },
       lagoonTint: { type: 'float', label: 'Channel tint', min: 0, max: 2, step: 0.02, default: 0.18, hint: 'generated river/delta mask tint; keep low while tuning PBR' },
+    },
+  };
+  out.glow = {
+    label: 'glow',
+    icon: '✺',
+    blurb: 'shoreline emission · seabed cyan',
+    fields: {
+      shoreGlow: { path: 'water.shoreGlow', type: 'bool', label: 'Shore glow', default: true, hint: 'toggles shoreline bioluminescence' },
+      shoreGlowWidth: { path: 'water.shoreGlowWidth', type: 'float', label: 'Glow width', min: 0.2, max: 10, step: 0.02, default: 1.2, hint: 'waterward spread of the shoreline glow' },
+      shoreGlowFollow: { path: 'water.shoreGlowFollow', type: 'float', label: 'Glow follow', min: 0, max: 1, step: 0.02, default: 0.65, hint: '1 = tight shore line · 0 = softer broad overlaps' },
+      shoreGlowSubstrate: { path: 'water.shoreGlowSubstrate', type: 'float', label: 'Glow seabed', min: 0, max: 4, step: 0.02, default: 0.45, hint: 'self-illuminates shallow coastal substrate; above 1 is art push' },
+      shoreGlowIntensity: { path: 'water.shoreGlowIntensity', type: 'float', label: 'Glow intensity', min: 0, max: 16, step: 0.02, default: 1.0, hint: 'overall shoreline emission energy' },
+      shoreGlowSurface: { path: 'water.shoreGlowSurface', type: 'float', label: 'Surface glow', min: 0, max: 8, step: 0.02, default: 0.65, hint: 'cyan emission on the water skin' },
+      shoreGlowCaustic: { path: 'water.shoreGlowCaustic', type: 'float', label: 'Caustic shimmer', min: 0, max: 4, step: 0.02, default: 0.55, hint: 'moving thread texture inside the glow' },
+      shoreGlowFalloff: { path: 'water.shoreGlowFalloff', type: 'float', label: 'Glow falloff', min: 0.2, max: 6, step: 0.02, default: 1.4, hint: 'higher = tighter waterward fade' },
+      shoreGlowSoftness: { path: 'water.shoreGlowSoftness', type: 'float', label: 'Glow softness', min: 0, max: 1, step: 0.02, default: 0.55, hint: 'shader blur for the low-res shoreline map' },
+      shoreGlowCanyon: { path: 'water.shoreGlowCanyon', type: 'float', label: 'Canyon light', min: 0, max: 4, step: 0.02, default: 0.45, hint: 'cyan lift on terrain carved by the water channel' },
     },
   };
   out.waves = {

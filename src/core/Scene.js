@@ -87,6 +87,8 @@ export class Scene {
     this.ambient = new THREE.AmbientLight(0xffffff, 0.05);
     this.scene.add(this.ambient);
     this._sunsetRelightMaterials = new Set();
+    this._waterGlowMaterials = new Set();
+    this._waterGlowSource = null;
     this._sunsetRelightState = {
       dir: new THREE.Vector3(1, 0, 0),
       color: new THREE.Color('#ff986c'),
@@ -331,6 +333,7 @@ export class Scene {
 
     if (this.sea) this.scene.remove(this.sea.group);
     this.sea = sea;
+    this._waterGlowSource = this.sea?.getWaterGlowSource?.() || null;
     this.scene.add(this.sea.group);
     this._applyWaterLighting();
 
@@ -340,6 +343,7 @@ export class Scene {
     this.treeCount = planted.treeCount;
     this.treeCounts = planted.treeCounts;
     this._applySunsetRelightTargets();
+    this._applyWaterGlowTargets();
     this._skyDirty = true;
   }
 
@@ -851,6 +855,113 @@ export class Scene {
     uniforms.uSunsetRelightAmount.value = amount;
   }
 
+  _applyWaterGlowTargets() {
+    this._patchWaterGlowGroup(this.islandGroup);
+    this._writeWaterGlowUniforms();
+  }
+
+  _patchWaterGlowGroup(root) {
+    root?.traverse?.((obj) => {
+      if (!obj?.isMesh) return;
+      const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+      for (const material of materials) this._patchWaterGlowMaterial(material);
+    });
+  }
+
+  _patchWaterGlowMaterial(material) {
+    if (!material || material.userData?.waterGlowPatched) return;
+    material.userData.waterGlowPatched = true;
+    const previous = material.onBeforeCompile;
+    material.onBeforeCompile = (shader, renderer) => {
+      previous?.call(material, shader, renderer);
+      const source = this._waterGlowSource || {};
+      shader.uniforms.uWaterGlowData = { value: source.texture || null };
+      shader.uniforms.uWaterGlowTexel = { value: source.texel?.clone?.() || new THREE.Vector2(1, 1) };
+      shader.uniforms.uWaterGlowWorldSize = { value: source.worldSize || 1 };
+      shader.uniforms.uWaterGlowEnable = { value: 0 };
+      shader.uniforms.uWaterGlowIntensity = { value: 1 };
+      shader.uniforms.uWaterGlowSubstrate = { value: 0 };
+      shader.uniforms.uWaterGlowSurface = { value: 0 };
+      shader.uniforms.uWaterGlowCanyon = { value: 0 };
+      shader.uniforms.uWaterGlowWidth = { value: 1.2 };
+      shader.uniforms.uWaterGlowSeaLevel = { value: this.store.get('water.seaLevel') ?? 9 };
+      material.userData.waterGlowUniforms = shader.uniforms;
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', '#include <common>\nvarying vec3 vWaterGlowWorld;\nvarying vec3 vWaterGlowNormal;')
+        .replace('#include <begin_vertex>', '#include <begin_vertex>\n  vWaterGlowWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;')
+        .replace('#include <defaultnormal_vertex>', '#include <defaultnormal_vertex>\n  vWaterGlowNormal = normalize(mat3(modelMatrix) * objectNormal);');
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', '#include <common>\nvarying vec3 vWaterGlowWorld;\nvarying vec3 vWaterGlowNormal;\nuniform sampler2D uWaterGlowData;\nuniform vec2 uWaterGlowTexel;\nuniform float uWaterGlowWorldSize;\nuniform float uWaterGlowEnable;\nuniform float uWaterGlowIntensity;\nuniform float uWaterGlowSubstrate;\nuniform float uWaterGlowSurface;\nuniform float uWaterGlowCanyon;\nuniform float uWaterGlowWidth;\nuniform float uWaterGlowSeaLevel;')
+        .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
+  vec2 waterGlowUv = vWaterGlowWorld.xz / max(1.0, uWaterGlowWorldSize) + 0.5;
+  float waterGlowInside = step(0.0, waterGlowUv.x) * step(waterGlowUv.x, 1.0) * step(0.0, waterGlowUv.y) * step(waterGlowUv.y, 1.0);
+  vec2 waterGlowPx = uWaterGlowTexel * max(1.0, uWaterGlowWidth * 0.72);
+  vec2 waterGlowUvA = waterGlowUv;
+  vec2 waterGlowUvB = waterGlowUv + vec2( waterGlowPx.x, 0.0);
+  vec2 waterGlowUvC = waterGlowUv + vec2(-waterGlowPx.x, 0.0);
+  vec2 waterGlowUvD = waterGlowUv + vec2(0.0,  waterGlowPx.y);
+  vec2 waterGlowUvE = waterGlowUv + vec2(0.0, -waterGlowPx.y);
+  vec2 waterGlowUvF = waterGlowUv + vec2( waterGlowPx.x,  waterGlowPx.y) * 0.72;
+  vec2 waterGlowUvG = waterGlowUv + vec2(-waterGlowPx.x,  waterGlowPx.y) * 0.72;
+  vec2 waterGlowUvH = waterGlowUv + vec2( waterGlowPx.x, -waterGlowPx.y) * 0.72;
+  vec2 waterGlowUvI = waterGlowUv + vec2(-waterGlowPx.x, -waterGlowPx.y) * 0.72;
+  float waterGlowInA = step(0.0, waterGlowUvA.x) * step(waterGlowUvA.x, 1.0) * step(0.0, waterGlowUvA.y) * step(waterGlowUvA.y, 1.0);
+  float waterGlowInB = step(0.0, waterGlowUvB.x) * step(waterGlowUvB.x, 1.0) * step(0.0, waterGlowUvB.y) * step(waterGlowUvB.y, 1.0);
+  float waterGlowInC = step(0.0, waterGlowUvC.x) * step(waterGlowUvC.x, 1.0) * step(0.0, waterGlowUvC.y) * step(waterGlowUvC.y, 1.0);
+  float waterGlowInD = step(0.0, waterGlowUvD.x) * step(waterGlowUvD.x, 1.0) * step(0.0, waterGlowUvD.y) * step(waterGlowUvD.y, 1.0);
+  float waterGlowInE = step(0.0, waterGlowUvE.x) * step(waterGlowUvE.x, 1.0) * step(0.0, waterGlowUvE.y) * step(waterGlowUvE.y, 1.0);
+  float waterGlowInF = step(0.0, waterGlowUvF.x) * step(waterGlowUvF.x, 1.0) * step(0.0, waterGlowUvF.y) * step(waterGlowUvF.y, 1.0);
+  float waterGlowInG = step(0.0, waterGlowUvG.x) * step(waterGlowUvG.x, 1.0) * step(0.0, waterGlowUvG.y) * step(waterGlowUvG.y, 1.0);
+  float waterGlowInH = step(0.0, waterGlowUvH.x) * step(waterGlowUvH.x, 1.0) * step(0.0, waterGlowUvH.y) * step(waterGlowUvH.y, 1.0);
+  float waterGlowInI = step(0.0, waterGlowUvI.x) * step(waterGlowUvI.x, 1.0) * step(0.0, waterGlowUvI.y) * step(waterGlowUvI.y, 1.0);
+  vec4 waterGlowData = texture2D(uWaterGlowData, clamp(waterGlowUvA, 0.0, 1.0)) * 0.34 * waterGlowInA;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvB, 0.0, 1.0)) * 0.11 * waterGlowInB;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvC, 0.0, 1.0)) * 0.11 * waterGlowInC;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvD, 0.0, 1.0)) * 0.11 * waterGlowInD;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvE, 0.0, 1.0)) * 0.11 * waterGlowInE;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvF, 0.0, 1.0)) * 0.055 * waterGlowInF;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvG, 0.0, 1.0)) * 0.055 * waterGlowInG;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvH, 0.0, 1.0)) * 0.055 * waterGlowInH;
+  waterGlowData += texture2D(uWaterGlowData, clamp(waterGlowUvI, 0.0, 1.0)) * 0.055 * waterGlowInI;
+  float waterGlowChannel = waterGlowData.g * waterGlowInside;
+  float waterGlowLand = waterGlowData.b * waterGlowInside;
+  float waterGlowDepth = waterGlowData.r * waterGlowInside;
+  float waterGlowShore = (1.0 - smoothstep(0.12, 0.82, waterGlowLand)) * (1.0 - smoothstep(0.12, 0.46, waterGlowDepth));
+  vec3 waterGlowNormal = normalize(vWaterGlowNormal);
+  float waterGlowWallCatch = 0.35 + 0.65 * (1.0 - abs(waterGlowNormal.y));
+  float waterGlowHeightFade = 1.0 - smoothstep(uWaterGlowSeaLevel + 45.0, uWaterGlowSeaLevel + 260.0, vWaterGlowWorld.y);
+  float waterGlowCanyon = smoothstep(0.05, 0.58, waterGlowChannel) * uWaterGlowCanyon * waterGlowHeightFade;
+  float waterGlowRim = waterGlowShore * max(0.0, uWaterGlowSubstrate) * 0.20;
+  float waterGlowPower = max(0.0, uWaterGlowEnable) * max(0.0, uWaterGlowIntensity) * (waterGlowRim * 0.25 + waterGlowCanyon * 0.085);
+  reflectedLight.indirectDiffuse += vec3(0.0, 0.42, 0.58) * waterGlowPower * waterGlowWallCatch;
+`);
+      this._writeWaterGlowUniformsFor(material);
+    };
+    material.needsUpdate = true;
+    this._waterGlowMaterials.add(material);
+  }
+
+  _writeWaterGlowUniforms() {
+    for (const material of this._waterGlowMaterials || []) this._writeWaterGlowUniformsFor(material);
+  }
+
+  _writeWaterGlowUniformsFor(material) {
+    const uniforms = material?.userData?.waterGlowUniforms;
+    if (!uniforms) return;
+    const water = this.store.get('water') || {};
+    const source = this._waterGlowSource || {};
+    uniforms.uWaterGlowData.value = source.texture || uniforms.uWaterGlowData.value;
+    if (source.texel) uniforms.uWaterGlowTexel.value.copy(source.texel);
+    uniforms.uWaterGlowWorldSize.value = source.worldSize || uniforms.uWaterGlowWorldSize.value || 1;
+    uniforms.uWaterGlowEnable.value = water.shoreGlow === false ? 0 : 1;
+    uniforms.uWaterGlowIntensity.value = THREE.MathUtils.clamp(water.shoreGlowIntensity ?? 1, 0, 16);
+    uniforms.uWaterGlowSubstrate.value = THREE.MathUtils.clamp(water.shoreGlowSubstrate ?? 0.45, 0, 4);
+    uniforms.uWaterGlowSurface.value = THREE.MathUtils.clamp(water.shoreGlowSurface ?? 0.65, 0, 8);
+    uniforms.uWaterGlowCanyon.value = THREE.MathUtils.clamp(water.shoreGlowCanyon ?? 0.45, 0, 4);
+    uniforms.uWaterGlowWidth.value = THREE.MathUtils.clamp(water.shoreGlowWidth ?? 1.2, 0.2, 10);
+    uniforms.uWaterGlowSeaLevel.value = this.store.get('water.seaLevel') ?? 9;
+  }
+
   // Push sun + glint params to the sea (guarded — sea is rebuilt on regen).
   _applyWaterLighting() {
     if (!this.sea) return;
@@ -894,6 +1005,7 @@ export class Scene {
           ...(this.store.get('water') || {}),
           ...(this.store.get('waves') || {}),
         });
+        this._writeWaterGlowUniforms();
         this._applySkyDiagnosis();
       }
     }

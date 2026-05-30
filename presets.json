@@ -1357,9 +1357,28 @@
         "causticScale": 4.6,
         "causticIntensity": 2.8,
         "causticOpacity": 0,
-        "shoreGlow": 1.35,
-        "shoreGlowWidth": 1.3,
-        "shoreGlowFollow": 0
+        "shoreGlow": true,
+        "shoreGlowWidth": 6.88,
+        "shoreGlowFollow": 0,
+        "shoreGlowSubstrate": 2.82,
+        "shoreGlowIntensity": 12.78,
+        "shoreGlowSurface": 0.65,
+        "shoreGlowCaustic": 0.55,
+        "shoreGlowFalloff": 1.4,
+        "shoreGlowSoftness": 0.55,
+        "shoreGlowCanyon": 0.45
+      },
+      "glow": {
+        "shoreGlow": true,
+        "shoreGlowWidth": 1.2,
+        "shoreGlowFollow": 0.65,
+        "shoreGlowSubstrate": 0.45,
+        "shoreGlowIntensity": 1,
+        "shoreGlowSurface": 0.65,
+        "shoreGlowCaustic": 0.55,
+        "shoreGlowFalloff": 1.4,
+        "shoreGlowSoftness": 0.55,
+        "shoreGlowCanyon": 0.45
       },
       "waves": {
         "waveSpeed": 2.7,
@@ -1551,18 +1570,18 @@
     },
     "cam": {
       "p": [
-        -708.0568568477523,
-        389.04162431542295,
-        800.4613202121068
+        -1102.599621812694,
+        276.7692451194795,
+        806.662069761489
       ],
       "q": [
-        -0.243423782892105,
-        -0.27914995446395297,
-        -0.07338376131157376,
-        0.9259778552541288
+        -0.13333914545109363,
+        -0.41130810067312956,
+        -0.06096241133941815,
+        0.8996276468710366
       ]
     },
-    "t": 1780104474833
+    "t": 1780120438393
   },
   "B4": {
     "params": {

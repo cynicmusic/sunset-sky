@@ -138,6 +138,147 @@ vec3 waterWaveNormal(vec2 xz, float speedMul, float scaleMul, float heightMul, f
 }
 `;
 
+const floorGlowCommon = /* glsl */`
+varying vec2 vFloorXZ;
+uniform float uTime;
+uniform sampler2D uWaterData;
+uniform vec2 uWaterTexel;
+uniform float uWaterWorldSize;
+uniform float uIslandRadius;
+uniform float uShoreGlow;
+uniform float uShoreGlowWidth;
+uniform float uShoreGlowFollow;
+uniform float uShoreGlowSubstrate;
+uniform float uShoreGlowIntensity;
+uniform float uShoreGlowCaustic;
+uniform float uShoreGlowFalloff;
+uniform float uShoreGlowSoftness;
+
+float fgHash(vec2 p) {
+  p = fract(p * vec2(123.34, 456.21));
+  p += dot(p, p + 45.32);
+  return fract(p.x * p.y);
+}
+
+float fgNoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(fgHash(i), fgHash(i + vec2(1.0, 0.0)), u.x),
+    mix(fgHash(i + vec2(0.0, 1.0)), fgHash(i + vec2(1.0, 1.0)), u.x),
+    u.y
+  );
+}
+
+float fgInside(vec2 uv) {
+  return step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
+}
+
+vec4 fgDataAt(vec2 uv) {
+  float inside = fgInside(uv);
+  vec4 data = texture2D(uWaterData, clamp(uv, 0.0, 1.0));
+  data.r = mix(1.0, data.r, inside);
+  data.g *= inside;
+  data.b *= inside;
+  data.a = inside;
+  return data;
+}
+
+float fgLandAt(vec2 uv) {
+  return fgDataAt(uv).b;
+}
+
+vec4 fgGlowSample(vec2 rawUv, float radius) {
+  vec2 px = uWaterTexel * radius;
+  vec4 sum = fgDataAt(rawUv) * 0.24;
+  sum += fgDataAt(rawUv + vec2( px.x, 0.0)) * 0.12;
+  sum += fgDataAt(rawUv + vec2(-px.x, 0.0)) * 0.12;
+  sum += fgDataAt(rawUv + vec2(0.0,  px.y)) * 0.12;
+  sum += fgDataAt(rawUv + vec2(0.0, -px.y)) * 0.12;
+  sum += fgDataAt(rawUv + vec2( px.x,  px.y) * 0.72) * 0.07;
+  sum += fgDataAt(rawUv + vec2(-px.x,  px.y) * 0.72) * 0.07;
+  sum += fgDataAt(rawUv + vec2( px.x, -px.y) * 0.72) * 0.07;
+  sum += fgDataAt(rawUv + vec2(-px.x, -px.y) * 0.72) * 0.07;
+  return sum;
+}
+
+float fgShoreProximity(vec2 uv, float width, float follow) {
+  float tightReach = mix(6.5, 2.2, follow) * max(0.2, width);
+  float broadReach = tightReach * mix(2.8, 1.55, follow);
+  vec2 a = uWaterTexel * tightReach;
+  vec2 b = uWaterTexel * broadReach;
+  float tightMax = 0.0;
+  float tightAvg = 0.0;
+  float broadMax = 0.0;
+  float broadAvg = 0.0;
+  float s;
+  s = fgLandAt(uv + vec2( a.x, 0.0)); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2(-a.x, 0.0)); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2(0.0,  a.y)); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2(0.0, -a.y)); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2( a.x,  a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2(-a.x,  a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2( a.x, -a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2(-a.x, -a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = fgLandAt(uv + vec2( b.x, 0.0)); broadMax = max(broadMax, s); broadAvg += s;
+  s = fgLandAt(uv + vec2(-b.x, 0.0)); broadMax = max(broadMax, s); broadAvg += s;
+  s = fgLandAt(uv + vec2(0.0,  b.y)); broadMax = max(broadMax, s); broadAvg += s;
+  s = fgLandAt(uv + vec2(0.0, -b.y)); broadMax = max(broadMax, s); broadAvg += s;
+  s = fgLandAt(uv + vec2( b.x,  b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  s = fgLandAt(uv + vec2(-b.x,  b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  s = fgLandAt(uv + vec2( b.x, -b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  s = fgLandAt(uv + vec2(-b.x, -b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  float tight = mix(tightAvg * 0.24, tightMax, follow * 0.55);
+  float broad = mix(broadAvg * 0.23, broadMax, follow * 0.35) * (1.0 - follow * 0.35);
+  return smoothstep(0.03, 0.72, clamp(max(tight, broad), 0.0, 1.0));
+}
+
+float fgCaustic(vec2 xz) {
+  float a = fgNoise(xz * 0.020 + vec2(uTime * 0.028, -uTime * 0.018));
+  float b = fgNoise(xz * 0.052 + vec2(-uTime * 0.044, uTime * 0.026));
+  float threads = smoothstep(0.52, 0.98, a * 0.68 + b * 0.44);
+  return mix(1.0, 0.58 + threads * 0.95, clamp(uShoreGlowCaustic, 0.0, 4.0) * 0.25);
+}
+`;
+
+function shoreGlowAmount(value) {
+  if (value === false) return 0;
+  if (value === true || value == null) return 1;
+  const num = Number(value);
+  return Number.isFinite(num) && num > 0 ? 1 : 0;
+}
+
+function shoreGlowParams(params = {}) {
+  return {
+    amount: shoreGlowAmount(params.shoreGlow),
+    width: THREE.MathUtils.clamp(params.shoreGlowWidth ?? 1.2, 0.2, 10),
+    follow: THREE.MathUtils.clamp(params.shoreGlowFollow ?? 0.65, 0, 1),
+    substrate: THREE.MathUtils.clamp(params.shoreGlowSubstrate ?? 0.45, 0, 4),
+    intensity: THREE.MathUtils.clamp(params.shoreGlowIntensity ?? 1.0, 0, 16),
+    surface: THREE.MathUtils.clamp(params.shoreGlowSurface ?? 0.65, 0, 8),
+    caustic: THREE.MathUtils.clamp(params.shoreGlowCaustic ?? 0.55, 0, 4),
+    falloff: THREE.MathUtils.clamp(params.shoreGlowFalloff ?? 1.4, 0.2, 6),
+    softness: THREE.MathUtils.clamp(params.shoreGlowSoftness ?? 0.55, 0, 1),
+    canyon: THREE.MathUtils.clamp(params.shoreGlowCanyon ?? 0.45, 0, 4),
+  };
+}
+
+function syncShoreGlowUniforms(uniforms, params = {}) {
+  if (!uniforms) return;
+  const glow = shoreGlowParams(params);
+  uniforms.uShoreGlow.value = glow.amount;
+  uniforms.uShoreGlowWidth.value = glow.width;
+  uniforms.uShoreGlowFollow.value = glow.follow;
+  uniforms.uShoreGlowSubstrate.value = glow.substrate;
+  uniforms.uShoreGlowIntensity.value = glow.intensity;
+  if (uniforms.uShoreGlowSurface) uniforms.uShoreGlowSurface.value = glow.surface;
+  uniforms.uShoreGlowCaustic.value = glow.caustic;
+  uniforms.uShoreGlowFalloff.value = glow.falloff;
+  if (uniforms.uShoreGlowSoftness) uniforms.uShoreGlowSoftness.value = glow.softness;
+  if (uniforms.uShoreGlowCanyon) uniforms.uShoreGlowCanyon.value = glow.canyon;
+}
+
 export class IslandSea {
   constructor(params) {
     this.group = new THREE.Group();
@@ -149,12 +290,67 @@ export class IslandSea {
     this._sunDir = new THREE.Vector3(0, 1, 0);
     this._sunCol = new THREE.Color('#fff3df');
     this._waterData = makeWaterDataTexture(params.volume, params.seaLevel, params.floorDepth);
+    this._floorUniforms = null;
 
     const radius = Math.max(params.worldSize * 12, 26000) * 0.5;
-    this.floor = new THREE.Mesh(
-      new THREE.CircleGeometry(radius, 96),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color('#062a36'), fog: true }),
-    );
+    const waterWorldSize = params.worldSize || params.radius * 2.3;
+    this._waterWorldSize = waterWorldSize;
+    this._waterTexel = new THREE.Vector2(1 / this._waterData.image.width, 1 / this._waterData.image.height);
+    const floorMat = new THREE.MeshBasicMaterial({ color: new THREE.Color('#062a36'), fog: true });
+    floorMat.onBeforeCompile = (shader) => {
+      const glow = shoreGlowParams(params);
+      shader.uniforms.uTime = { value: 0 };
+      shader.uniforms.uWaterData = { value: this._waterData };
+      shader.uniforms.uWaterTexel = { value: this._waterTexel };
+      shader.uniforms.uWaterWorldSize = { value: waterWorldSize };
+      shader.uniforms.uIslandRadius = { value: params.radius || waterWorldSize * 0.435 };
+      shader.uniforms.uShoreGlow = { value: glow.amount };
+      shader.uniforms.uShoreGlowWidth = { value: glow.width };
+      shader.uniforms.uShoreGlowFollow = { value: glow.follow };
+      shader.uniforms.uShoreGlowSubstrate = { value: glow.substrate };
+      shader.uniforms.uShoreGlowIntensity = { value: glow.intensity };
+      shader.uniforms.uShoreGlowCaustic = { value: glow.caustic };
+      shader.uniforms.uShoreGlowFalloff = { value: glow.falloff };
+      shader.uniforms.uShoreGlowSoftness = { value: glow.softness };
+      this._floorUniforms = shader.uniforms;
+
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', `#include <common>
+varying vec2 vFloorXZ;
+`)
+        .replace('#include <begin_vertex>', `#include <begin_vertex>
+  vec4 floorWorld = modelMatrix * vec4(transformed, 1.0);
+  vFloorXZ = floorWorld.xz;
+`);
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', `#include <common>
+${floorGlowCommon}
+`)
+        .replace('#include <color_fragment>', `#include <color_fragment>
+  vec2 floorUv = vFloorXZ / max(1.0, uWaterWorldSize) + 0.5;
+  float floorInside = step(0.0, floorUv.x) * step(floorUv.x, 1.0) * step(0.0, floorUv.y) * step(floorUv.y, 1.0);
+  float floorWidth = max(0.2, uShoreGlowWidth);
+  float floorBlur = mix(1.4, 9.5, clamp(uShoreGlowSoftness, 0.0, 1.0)) * mix(0.7, 1.35, clamp(floorWidth / 10.0, 0.0, 1.0));
+  vec4 floorWater = fgGlowSample(floorUv, floorBlur);
+  float floorDepth = floorWater.r;
+  float floorLand = floorWater.b;
+  float floorWaterMask = (1.0 - smoothstep(0.10, 0.78, floorLand)) * floorInside * floorWater.a;
+  float floorNearShore = fgShoreProximity(floorUv, floorWidth, clamp(uShoreGlowFollow, 0.0, 1.0));
+  float floorIslandGate = 1.0 - smoothstep(uIslandRadius * 1.03, uIslandRadius * 1.36, length(vFloorXZ));
+  float floorDepthReach = mix(0.09, 0.36, clamp(floorWidth / 10.0, 0.0, 1.0));
+  float floorShallow = 1.0 - smoothstep(0.025, floorDepthReach, floorDepth);
+  float floorFalloff = pow(clamp(floorNearShore * floorShallow, 0.0, 1.0), max(0.25, uShoreGlowFalloff * 0.34));
+  float floorBreath = 0.82 + 0.18 * fgNoise(vFloorXZ * 0.018 + vec2(uTime * 0.030, -uTime * 0.020));
+  float floorSubstrateGain = pow(max(0.0, uShoreGlowSubstrate), 0.62);
+  float floorIntensityGain = max(0.0, uShoreGlowIntensity);
+  float floorDarkBoost = 1.0 + smoothstep(0.0, 0.55, floorSubstrateGain) * 1.4;
+  float floorGlow = max(0.0, uShoreGlow) * floorIntensityGain * floorSubstrateGain
+    * floorWaterMask * floorIslandGate * floorFalloff * floorBreath * floorDarkBoost * fgCaustic(vFloorXZ);
+  vec3 floorBio = mix(vec3(0.0, 0.18, 0.24), vec3(0.0, 0.66, 0.78), floorShallow);
+  diffuseColor.rgb += floorBio * floorGlow * 3.2;
+`);
+    };
+    this.floor = new THREE.Mesh(new THREE.CircleGeometry(radius, 96), floorMat);
     this.floor.rotation.x = -Math.PI / 2;
     this.floor.position.y = params.seaLevel - (params.floorDepth || 64) - 10;
     this.floor.renderOrder = 1;
@@ -176,6 +372,7 @@ export class IslandSea {
     const fade0 = params.radius * 1.4;
     const fade1 = radius * 0.96;
     this.surfaceMat.onBeforeCompile = (shader) => {
+      const glow = shoreGlowParams(params);
       shader.uniforms.uHorizon = { value: this._horizon };
       shader.uniforms.uF0 = { value: fade0 };
       shader.uniforms.uF1 = { value: fade1 };
@@ -183,7 +380,9 @@ export class IslandSea {
       shader.uniforms.uSunCol = { value: this._sunCol };
       shader.uniforms.uCamPos = { value: new THREE.Vector3() };
       shader.uniforms.uWaterData = { value: this._waterData };
-      shader.uniforms.uWaterWorldSize = { value: params.worldSize || params.radius * 2.3 };
+      shader.uniforms.uWaterTexel = { value: this._waterTexel };
+      shader.uniforms.uWaterWorldSize = { value: waterWorldSize };
+      shader.uniforms.uIslandRadius = { value: params.radius || waterWorldSize * 0.435 };
       shader.uniforms.uStage = { value: params.surfaceStage ?? params.tutorialStage ?? 5 };
       shader.uniforms.uTime = { value: 0 };
       shader.uniforms.uSurfaceAlpha = { value: params.surfaceOpacity ?? 0.55 };
@@ -226,6 +425,15 @@ export class IslandSea {
       shader.uniforms.uNormalStrength = { value: params.normalStrength ?? 0.4 };
       shader.uniforms.uRefractionStrength = { value: params.refractionStrength ?? 0.18 };
       shader.uniforms.uLagoonTint = { value: params.lagoonTint ?? 0.18 };
+      shader.uniforms.uShoreGlow = { value: glow.amount };
+      shader.uniforms.uShoreGlowWidth = { value: glow.width };
+      shader.uniforms.uShoreGlowFollow = { value: glow.follow };
+      shader.uniforms.uShoreGlowSubstrate = { value: glow.substrate };
+      shader.uniforms.uShoreGlowIntensity = { value: glow.intensity };
+      shader.uniforms.uShoreGlowSurface = { value: glow.surface };
+      shader.uniforms.uShoreGlowCaustic = { value: glow.caustic };
+      shader.uniforms.uShoreGlowFalloff = { value: glow.falloff };
+      shader.uniforms.uShoreGlowSoftness = { value: glow.softness };
       shader.uniforms.uLandMask = { value: params.landMask ?? 1 };
       shader.uniforms.uDebugView = { value: params.debugView ?? 0 };
       this._uniforms = shader.uniforms;
@@ -273,13 +481,24 @@ uniform vec3 uSunDir;
 uniform vec3 uSunCol;
 uniform vec3 uCamPos;
 uniform sampler2D uWaterData;
+uniform vec2 uWaterTexel;
 uniform float uWaterWorldSize;
+uniform float uIslandRadius;
 uniform float uSurfaceAlpha;
 uniform float uDepthTint;
 uniform float uDetailMix;
 uniform float uNormalStrength;
 uniform float uRefractionStrength;
 uniform float uLagoonTint;
+uniform float uShoreGlow;
+uniform float uShoreGlowWidth;
+uniform float uShoreGlowFollow;
+uniform float uShoreGlowSubstrate;
+uniform float uShoreGlowIntensity;
+uniform float uShoreGlowSurface;
+uniform float uShoreGlowCaustic;
+uniform float uShoreGlowFalloff;
+uniform float uShoreGlowSoftness;
 uniform float uLandMask;
 uniform float uDebugView;
 
@@ -291,6 +510,55 @@ vec4 waterSample(vec2 rawUv) {
   wd.b *= inside;
   wd.a = inside;
   return wd;
+}
+
+float waterLandAt(vec2 uv) {
+  return texture2D(uWaterData, clamp(uv, 0.0, 1.0)).b;
+}
+
+vec4 waterGlowSample(vec2 rawUv, float radius) {
+  vec2 px = uWaterTexel * radius;
+  vec4 sum = waterSample(rawUv) * 0.24;
+  sum += waterSample(rawUv + vec2( px.x, 0.0)) * 0.12;
+  sum += waterSample(rawUv + vec2(-px.x, 0.0)) * 0.12;
+  sum += waterSample(rawUv + vec2(0.0,  px.y)) * 0.12;
+  sum += waterSample(rawUv + vec2(0.0, -px.y)) * 0.12;
+  sum += waterSample(rawUv + vec2( px.x,  px.y) * 0.72) * 0.07;
+  sum += waterSample(rawUv + vec2(-px.x,  px.y) * 0.72) * 0.07;
+  sum += waterSample(rawUv + vec2( px.x, -px.y) * 0.72) * 0.07;
+  sum += waterSample(rawUv + vec2(-px.x, -px.y) * 0.72) * 0.07;
+  return sum;
+}
+
+float shoreProximity(vec2 uv, float width, float follow) {
+  float tightReach = mix(6.5, 2.2, follow) * max(0.2, width);
+  float broadReach = tightReach * mix(2.6, 1.55, follow);
+  vec2 a = uWaterTexel * tightReach;
+  vec2 b = uWaterTexel * broadReach;
+  float tightMax = 0.0;
+  float tightAvg = 0.0;
+  float broadMax = 0.0;
+  float broadAvg = 0.0;
+  float s;
+  s = waterLandAt(uv + vec2( a.x, 0.0)); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2(-a.x, 0.0)); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2(0.0,  a.y)); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2(0.0, -a.y)); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2( a.x,  a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2(-a.x,  a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2( a.x, -a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2(-a.x, -a.y) * 0.72); tightMax = max(tightMax, s); tightAvg += s;
+  s = waterLandAt(uv + vec2( b.x, 0.0)); broadMax = max(broadMax, s); broadAvg += s;
+  s = waterLandAt(uv + vec2(-b.x, 0.0)); broadMax = max(broadMax, s); broadAvg += s;
+  s = waterLandAt(uv + vec2(0.0,  b.y)); broadMax = max(broadMax, s); broadAvg += s;
+  s = waterLandAt(uv + vec2(0.0, -b.y)); broadMax = max(broadMax, s); broadAvg += s;
+  s = waterLandAt(uv + vec2( b.x,  b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  s = waterLandAt(uv + vec2(-b.x,  b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  s = waterLandAt(uv + vec2( b.x, -b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  s = waterLandAt(uv + vec2(-b.x, -b.y) * 0.68); broadMax = max(broadMax, s); broadAvg += s;
+  float tight = mix(tightAvg * 0.24, tightMax, follow * 0.55);
+  float broad = mix(broadAvg * 0.23, broadMax, follow * 0.35) * (1.0 - follow * 0.35);
+  return smoothstep(0.03, 0.72, clamp(max(tight, broad), 0.0, 1.0));
 }
 `)
         .replace('#include <normal_fragment_begin>', `#include <normal_fragment_begin>
@@ -336,6 +604,14 @@ vec4 waterSample(vec2 rawUv) {
   float land = waterData.b;
   float waterMask = mix(1.0, 1.0 - smoothstep(0.14, 0.82, land), clamp(uLandMask, 0.0, 1.0));
   float clear = smoothstep(0.0, 0.2, depth);
+  float glowWidth = max(0.2, uShoreGlowWidth);
+  float glowFollow = clamp(uShoreGlowFollow, 0.0, 1.0);
+  float glowBlur = mix(1.4, 9.5, clamp(uShoreGlowSoftness, 0.0, 1.0)) * mix(0.7, 1.35, clamp(glowWidth / 10.0, 0.0, 1.0));
+  vec4 glowData = waterGlowSample(rawWaterUv + distort * 0.35, glowBlur);
+  float glowDepth = glowData.r;
+  float glowLand = glowData.b;
+  float glowWaterMask = mix(1.0, 1.0 - smoothstep(0.10, 0.78, glowLand), clamp(uLandMask, 0.0, 1.0)) * glowData.a;
+  float glowIslandGate = 1.0 - smoothstep(uIslandRadius * 1.03, uIslandRadius * 1.36, length(vWaterXZ));
 
   vec3 surfaceColor = vec3(0.10, 0.58, 0.66);
   vec3 shallowColor = vec3(0.08, 0.86, 0.93);
@@ -345,11 +621,35 @@ vec4 waterSample(vec2 rawUv) {
   vec3 depthColor = mix(shallowColor, midColor, smoothstep(0.02, 0.45, depth));
   depthColor = mix(depthColor, deepColor, smoothstep(0.36, 1.0, depth));
   depthColor = mix(depthColor, lagoonColor, clamp(channel * uLagoonTint, 0.0, 1.0));
+  float nearShore = shoreProximity(rawWaterUv, glowWidth, glowFollow);
+  float glowDepthReach = mix(0.09, 0.36, clamp(glowWidth / 10.0, 0.0, 1.0));
+  float shallowGate = 1.0 - smoothstep(0.035, glowDepthReach, glowDepth);
+  float shoreMask = pow(clamp(nearShore * shallowGate, 0.0, 1.0), max(0.25, uShoreGlowFalloff * 0.34)) * glowWaterMask * glowIslandGate;
+  float shoreNoise = wnoise(vWaterXZ * 0.035 + vec2(uTime * 0.055, -uTime * 0.035));
+  float causticA = seaOctave(vWaterXZ * 0.018 + vec2(uTime * 0.035, -uTime * 0.022), 1.2);
+  float causticB = wnoise(vWaterXZ * 0.057 + vec2(-uTime * 0.045, uTime * 0.030));
+  float caustic = mix(1.0, 0.55 + smoothstep(0.46, 1.08, causticA * 0.78 + causticB * 0.44) * 1.25, clamp(uShoreGlowCaustic, 0.0, 4.0) * 0.25);
+  float shorePulse = 0.80 + 0.20 * sin(uTime * 0.9 + shoreNoise * 6.2831);
+  float glowGain = max(0.0, uShoreGlowIntensity);
+  float substrateGain = pow(max(0.0, uShoreGlowSubstrate), 0.62);
+  float surfaceGain = max(0.0, uShoreGlowSurface);
+  float overdrive = smoothstep(1.0, 10.0, glowGain);
+  float shoreEnergy = max(0.0, uShoreGlow) * glowGain * shoreMask * shorePulse * caustic;
+  float substrateDarkGate = 1.0 - smoothstep(0.16, 0.58, dot(depthColor, vec3(0.2126, 0.7152, 0.0722)));
+  vec3 shoreDeep = vec3(0.0, 0.18, 0.25);
+  vec3 shoreCyan = vec3(0.0, 0.62, 0.76);
+  vec3 bioGlow = mix(shoreDeep, shoreCyan, shallowGate);
+  depthColor += bioGlow * shoreEnergy * substrateGain * mix(0.75, 2.35, substrateDarkGate);
 
   float depthGate = step(1.5, uStage);
   float colorGate = step(5.5, uStage);
   vec3 waterColor = mix(surfaceColor, mix(surfaceColor, depthColor, clamp(0.22 + uDepthTint * 0.62, 0.0, 0.95)), depthGate);
   waterColor = mix(waterColor, depthColor, colorGate);
+  float waterDarkGate = 1.0 - smoothstep(0.18, 0.62, dot(waterColor, vec3(0.2126, 0.7152, 0.0722)));
+  float nightGlowBoost = mix(1.0, 2.6, waterDarkGate);
+  vec3 surfaceBio = mix(vec3(0.0, 0.22, 0.30), vec3(0.0, 0.78, 0.90), waterDarkGate);
+  waterColor += surfaceBio * shoreEnergy * surfaceGain * nightGlowBoost * mix(0.34, 1.45, waterDarkGate);
+  waterColor += vec3(0.0, 0.42, 0.50) * shoreMask * max(0.0, uShoreGlow) * overdrive * (surfaceGain + substrateGain * 0.35) * waterDarkGate * 0.85;
 
   float waveVis = clamp(vWaterWave / max(0.001, uWaveHeight * patchHeightMul * 2.4), 0.0, 1.0);
   float detail = mix(broad, fine, clamp(uDetailMix, 0.0, 1.0));
@@ -373,7 +673,7 @@ vec4 waterSample(vec2 rawUv) {
     if (mode == 4.0) waterColor = dbgNormal * 0.5 + 0.5;
     if (mode == 5.0) waterColor = vec3(land, 0.0, 1.0 - land);
     if (mode == 6.0) waterColor = vec3(chaosLayer);
-    if (mode == 7.0) waterColor = vec3(uLayerBroad, uLayerFine, uLayerChaos);
+    if (mode == 7.0) waterColor = vec3(shoreMask, nearShore, shallowGate);
     alpha = mix(0.18, 0.9, max(max(waterColor.r, waterColor.g), waterColor.b)) * waterMask;
   }
 
@@ -440,6 +740,7 @@ vec4 waterSample(vec2 rawUv) {
       this._surfaceLift = THREE.MathUtils.clamp(params.surfaceLift, -1, 2);
       this.setLevel(this._seaLevel);
     }
+    syncShoreGlowUniforms(this._floorUniforms, params);
     if (!this._uniforms) return;
     this._uniforms.uStage.value = THREE.MathUtils.clamp(params.surfaceStage ?? params.tutorialStage ?? 5, 3, 5);
     this._uniforms.uSurfaceAlpha.value = THREE.MathUtils.clamp(params.surfaceOpacity ?? 0.55, 0.02, 1);
@@ -465,6 +766,7 @@ vec4 waterSample(vec2 rawUv) {
     this._uniforms.uNormalStrength.value = THREE.MathUtils.clamp(params.normalStrength ?? 0.4, 0, 2);
     this._uniforms.uRefractionStrength.value = THREE.MathUtils.clamp(params.refractionStrength ?? 0.18, 0, 0.7);
     this._uniforms.uLagoonTint.value = Math.max(0, params.lagoonTint ?? 0.18);
+    syncShoreGlowUniforms(this._uniforms, params);
     this._uniforms.uLandMask.value = THREE.MathUtils.clamp(params.landMask ?? 1, 0, 1);
     this._uniforms.uDebugView.value = THREE.MathUtils.clamp(params.debugView ?? 0, 0, 7);
     const weights = this._layerWeights(params);
@@ -543,7 +845,16 @@ vec4 waterSample(vec2 rawUv) {
 
   setGlint() {}
 
+  getWaterGlowSource() {
+    return {
+      texture: this._waterData,
+      texel: this._waterTexel,
+      worldSize: this._waterWorldSize,
+    };
+  }
+
   update(elapsed, camPos) {
+    if (this._floorUniforms) this._floorUniforms.uTime.value = elapsed;
     if (!this._uniforms) return;
     this._uniforms.uTime.value = elapsed;
     if (camPos) {

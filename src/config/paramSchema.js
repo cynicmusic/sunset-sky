@@ -153,9 +153,27 @@ export const schema = {
       deltaFloor: { type: 'float', label: 'Delta follow', min: 0, max: 1, step: 0.02, default: 0, hint: 'carves underwater floor along the river/delta channel' },
       surfaceLift: { type: 'float', label: 'Surface lift', min: -1, max: 2, step: 0.02, default: 0.08, unit: 'm', hint: 'nudges the water skin off the terrain to fight shore z-flicker' },
       landMask: { type: 'float', label: 'Land mask', min: 0, max: 1, step: 0.02, default: 1, hint: 'fade water off generated land cells; lower exposes seam behavior' },
-      debugView: { type: 'int', label: 'Debug view', min: 0, max: 5, step: 1, default: 0, labels: ['final', 'depth', 'channel', 'wave', 'normal', 'land'], hint: 'visualize the generated water masks' },
+      debugView: { type: 'int', label: 'Debug view', min: 0, max: 7, step: 1, default: 0, labels: ['final', 'depth', 'channel', 'wave', 'normal', 'land', 'detail', 'shore glow'], hint: 'visualize the generated water masks' },
       depthTint: { type: 'float', label: 'Depth tint', min: 0, max: 1.5, step: 0.02, default: 0.78, hint: 'Beer-Lambert-ish blue/green tint from generated seafloor depth' },
       lagoonTint: { type: 'float', label: 'Lagoon tint', min: 0, max: 2, step: 0.02, default: 0.18, hint: 'extra cyan along generated valley/delta channel' },
+    },
+  },
+
+  glow: {
+    label: 'glow',
+    icon: '✺',
+    blurb: 'shoreline emission · seabed cyan',
+    fields: {
+      shoreGlow: { path: 'water.shoreGlow', type: 'bool', label: 'Shore glow', default: true, hint: 'toggles shoreline bioluminescence' },
+      shoreGlowWidth: { path: 'water.shoreGlowWidth', type: 'float', label: 'Glow width', min: 0.2, max: 10, step: 0.02, default: 1.2, hint: 'waterward spread of the shoreline glow' },
+      shoreGlowFollow: { path: 'water.shoreGlowFollow', type: 'float', label: 'Glow follow', min: 0, max: 1, step: 0.02, default: 0.65, hint: '1 = tight shore line · 0 = softer broad overlaps' },
+      shoreGlowSubstrate: { path: 'water.shoreGlowSubstrate', type: 'float', label: 'Glow seabed', min: 0, max: 4, step: 0.02, default: 0.45, hint: 'self-illuminates shallow coastal substrate; above 1 is art push' },
+      shoreGlowIntensity: { path: 'water.shoreGlowIntensity', type: 'float', label: 'Glow intensity', min: 0, max: 16, step: 0.02, default: 1.0, hint: 'overall shoreline emission energy' },
+      shoreGlowSurface: { path: 'water.shoreGlowSurface', type: 'float', label: 'Surface glow', min: 0, max: 8, step: 0.02, default: 0.65, hint: 'cyan emission on the water skin' },
+      shoreGlowCaustic: { path: 'water.shoreGlowCaustic', type: 'float', label: 'Caustic shimmer', min: 0, max: 4, step: 0.02, default: 0.55, hint: 'moving thread texture inside the glow' },
+      shoreGlowFalloff: { path: 'water.shoreGlowFalloff', type: 'float', label: 'Glow falloff', min: 0.2, max: 6, step: 0.02, default: 1.4, hint: 'higher = tighter waterward fade' },
+      shoreGlowSoftness: { path: 'water.shoreGlowSoftness', type: 'float', label: 'Glow softness', min: 0, max: 1, step: 0.02, default: 0.55, hint: 'shader blur for the low-res shoreline map' },
+      shoreGlowCanyon: { path: 'water.shoreGlowCanyon', type: 'float', label: 'Canyon light', min: 0, max: 4, step: 0.02, default: 0.45, hint: 'cyan lift on terrain carved by the water channel' },
     },
   },
 
@@ -296,4 +314,4 @@ export const schema = {
   },
 };
 
-export const sectionOrder = ['orbitSweep', 'sun', 'atmosphere', 'lighting', 'sunsetLighting', 'voxel', 'island', 'lagoon', 'seasons', 'water', 'waves', 'tree', 'shadows', 'render', 'godrays', 'camera'];
+export const sectionOrder = ['orbitSweep', 'sun', 'atmosphere', 'lighting', 'sunsetLighting', 'voxel', 'island', 'lagoon', 'seasons', 'water', 'glow', 'waves', 'tree', 'shadows', 'render', 'godrays', 'camera'];
