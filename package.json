@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 57210 --strictPort",
     "build": "vite build",
+    "presets:ship": "node scripts/ship-presets.mjs",
     "smoke": "node scripts/smoke-workshop.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 57210"
   },
