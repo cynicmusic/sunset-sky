@@ -27,8 +27,8 @@ const workshopPresetLabel = 'sunset-sky';
 
 const schema = makeWorkshopSchema();
 const tuningSections = ['waves'];
-const cloudSections = ['cloudsRender', 'takramAtmosphere', 'cloudWeather', 'cloudLayer0', 'cloudLighting', 'cloudShadows', 'cloudDebug'];
-const sectionOrder = ['skyDiagnosis', 'gain', ...cloudSections, 'water', 'waves', 'sun', 'atmosphere', 'lighting', 'island', 'lagoon', 'voxel', 'seasons', 'tree', 'shadows', 'render'];
+const cloudSections = ['cloudsRender', 'takramAtmosphere', 'atmosphereBridge', 'cloudWeather', 'cloudLayer0', 'cloudLighting', 'cloudShadows', 'cloudDebug'];
+const sectionOrder = ['skyDiagnosis', 'gain', ...cloudSections, 'water', 'waves', 'sun', 'atmosphere', 'lighting', 'sunsetLighting', 'island', 'lagoon', 'voxel', 'seasons', 'tree', 'shadows', 'render'];
 const workshopDefaults = buildDefaults(schema, defaultParams);
 
 const buildConsole = new BuildConsole({ parent: uiRoot, label: `${workshopName} build` });
@@ -422,6 +422,64 @@ function makeWorkshopSchema() {
         type: 'float', label: 'Glint spread', min: 0.2, max: 4, step: 0.05, default: 1.1,
         hint: 'lighting.glintSpread',
       },
+      sunsetLightGroup: {
+        type: 'group', label: 'island relight', icon: '◑', map: 'sunsetLighting.*',
+        color: '#ff8a3a', wash: 'rgba(255, 138, 58, 0.13)',
+      },
+      sunsetLightEnable: {
+        path: 'sunsetLighting.enable',
+        type: 'bool', label: 'Relight on', default: true,
+        hint: 'sunsetLighting.enable',
+      },
+      sunsetLightKey: {
+        path: 'sunsetLighting.keyIntensity',
+        type: 'float', label: 'Relight key', min: 0, max: 6, step: 0.02, default: 1.6,
+        hint: 'sunsetLighting.keyIntensity',
+      },
+      sunsetLightFill: {
+        path: 'sunsetLighting.fillIntensity',
+        type: 'float', label: 'Relight fill', min: 0, max: 2, step: 0.02, default: 0.35,
+        hint: 'sunsetLighting.fillIntensity',
+      },
+      sunsetLightWarmth: {
+        path: 'sunsetLighting.warmth',
+        type: 'float', label: 'Relight warmth', min: 0, max: 1, step: 0.02, default: 0.72,
+        hint: 'sunsetLighting.warmth',
+      },
+      sunsetTerrainAmount: {
+        path: 'sunsetLighting.terrainAmount',
+        type: 'float', label: 'Terrain light', min: 0, max: 2, step: 0.02, default: 1,
+        hint: 'sunsetLighting.terrainAmount',
+      },
+      sunsetTreeAmount: {
+        path: 'sunsetLighting.treeAmount',
+        type: 'float', label: 'Tree light', min: 0, max: 2, step: 0.02, default: 1,
+        hint: 'sunsetLighting.treeAmount',
+      },
+      atmosphereBridgeGroup: {
+        type: 'group', label: 'legacy tint', icon: '◍', map: 'atmosphereBridge.*',
+        color: '#d68cff', wash: 'rgba(214, 140, 255, 0.13)',
+      },
+      atmosphereBridgeEnable: {
+        path: 'atmosphereBridge.enable',
+        type: 'bool', label: 'Tint bridge', default: false,
+        hint: 'atmosphereBridge.enable',
+      },
+      atmosphereBridgeAmount: {
+        path: 'atmosphereBridge.amount',
+        type: 'float', label: 'Tint amount', min: 0, max: 1, step: 0.01, default: 0.35,
+        hint: 'atmosphereBridge.amount',
+      },
+      atmosphereBridgeViolet: {
+        path: 'atmosphereBridge.violetBias',
+        type: 'float', label: 'Violet bias', min: -1, max: 1, step: 0.01, default: 0.2,
+        hint: 'atmosphereBridge.violetBias',
+      },
+      atmosphereBridgeRed: {
+        path: 'atmosphereBridge.redBias',
+        type: 'float', label: 'Red bias', min: -1, max: 1, step: 0.01, default: 0,
+        hint: 'atmosphereBridge.redBias',
+      },
       atmosphereGroup: {
         type: 'group', label: 'atmosphere', icon: '◐', map: 'atmosphere.* + render.fog',
         color: '#b68cff', wash: 'rgba(182, 140, 255, 0.13)',
@@ -575,6 +633,22 @@ function makeWorkshopSchema() {
       albedoScale: { type: 'float', label: 'Albedo scale', min: 0, max: 2, step: 0.02, default: 1 },
     },
   };
+  out.atmosphereBridge = {
+    label: 'legacy tint bridge',
+    icon: '◍',
+    blurb: 'experimental pre-tonemap tint from Hillaire controls',
+    fields: {
+      enable: { type: 'bool', label: 'Enable', default: false, hint: 'pre-tonemap depth-gated grade; removeable experiment' },
+      amount: { type: 'float', label: 'Amount', min: 0, max: 1, step: 0.01, default: 0.35 },
+      legacyMix: { type: 'float', label: 'Atmosphere drive', min: 0, max: 1, step: 0.01, default: 1, hint: 'how strongly Rayleigh/Mie/Ozone/Planet R steer the tint' },
+      violetBias: { type: 'float', label: 'Violet bias', min: -1, max: 1, step: 0.01, default: 0.2 },
+      redBias: { type: 'float', label: 'Red bias', min: -1, max: 1, step: 0.01, default: 0 },
+      saturation: { type: 'float', label: 'Saturation', min: 0, max: 2, step: 0.02, default: 1.08 },
+      lift: { type: 'float', label: 'Luma lift', min: 0, max: 0.5, step: 0.005, default: 0.03, hint: 'small radiance lift before ACES' },
+      horizonBias: { type: 'float', label: 'Low-sky bias', min: 0, max: 1, step: 0.01, default: 0.4, hint: '0 = whole far sky; 1 = stronger near lower screen' },
+      depthStart: { type: 'float', label: 'Depth gate', min: 0.8, max: 1, step: 0.001, precision: 3, default: 0.985, hint: 'higher values protect island/water foreground more' },
+    },
+  };
   out.cloudWeather = {
     label: 'cloud weather',
     icon: '☁',
@@ -658,6 +732,7 @@ function makeWorkshopSchema() {
       rayDistance: { type: 'float', label: 'Ray distance', min: 20000, max: 220000, step: 5000, default: 120000, unit: 'm' },
     },
   };
+  const { exposure: _legacyRenderExposure, ...renderFields } = out.render.fields;
   out.render.fields = {
     toneMapping: {
       path: 'cloudFinishing.toneMapping',
@@ -670,7 +745,7 @@ function makeWorkshopSchema() {
       type: 'bool', label: 'Dither', default: true,
       hint: 'postprocessing fullscreen dithering toggle',
     },
-    ...out.render.fields,
+    ...renderFields,
   };
   out.cloudFinishing = {
     label: 'lens / finishing',
@@ -843,6 +918,10 @@ window.island = {
       coverage: 'cloudWeather.coverage',
       toneMapping: 'cloudFinishing.toneMapping',
       dithering: 'cloudFinishing.dithering',
+      tintBridge: 'atmosphereBridge.enable',
+      tintAmount: 'atmosphereBridge.amount',
+      violetBias: 'atmosphereBridge.violetBias',
+      redBias: 'atmosphereBridge.redBias',
     };
     for (const [key, value] of Object.entries(values)) store.set(aliases[key] || key, value);
     return takramRig.getDebugSnapshot();

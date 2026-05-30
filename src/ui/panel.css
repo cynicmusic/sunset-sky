@@ -190,6 +190,8 @@
 .ff-section[data-section="chaos"]      { --label-gradient: linear-gradient(110deg, #d4ff31 0%, #70f8ff 46%, #ff8a3a 100%); --label-bar: #a6ff26; --label-wash: rgba(166,255,38,0.06); --label-wash-strong: rgba(166,255,38,0.12); }
 .ff-section[data-section="lod"]        { --label-gradient: linear-gradient(110deg, #c9d4dd 0%, #70f8ff 48%, #7aa2ff 100%); --label-bar: #70a8ff; --label-wash: rgba(112,168,255,0.055); --label-wash-strong: rgba(112,168,255,0.11); }
 .ff-section[data-section="lighting"]   { --label-gradient: linear-gradient(110deg, #fff1c2 0%, #ffd166 50%, #ff9e3d 100%); --label-bar: #ffcf6a; --label-wash: rgba(255,206,106,0.08); --label-wash-strong: rgba(255,206,106,0.14); }
+.ff-section[data-section="sunsetLighting"] { --label-gradient: linear-gradient(110deg, #fff1c2 0%, #ff9e3d 48%, #ff5141 100%); --label-bar: #ff8a3a; --label-wash: rgba(255,138,58,0.08); --label-wash-strong: rgba(255,138,58,0.15); }
+.ff-section[data-section="atmosphereBridge"] { --label-gradient: linear-gradient(110deg, #ff8a3a 0%, #d68cff 48%, #6ee7d8 100%); --label-bar: #d68cff; --label-wash: rgba(214,140,255,0.075); --label-wash-strong: rgba(214,140,255,0.14); }
 .ff-section[data-section="gain"]       { --label-gradient: linear-gradient(110deg, #ffb15f 0%, #f0e5cf 48%, #6ee7d8 100%); --label-bar: #ff9e4a; --label-wash: rgba(255,158,74,0.08); --label-wash-strong: rgba(255,158,74,0.15); }
 .ff-section[data-section="render"]     { --label-gradient: linear-gradient(110deg, #a8b2bc 0%, #ecf0f4 50%, #889098 100%); --label-bar: #aab4be; --label-wash: rgba(170,180,190,0.05); --label-wash-strong: rgba(170,180,190,0.09); }
 

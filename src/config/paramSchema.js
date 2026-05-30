@@ -49,6 +49,22 @@ export const schema = {
     },
   },
 
+  sunsetLighting: {
+    label: 'sunset island light',
+    icon: '◑',
+    blurb: 'extra no-shadow key/fill for terrain and trees only',
+    fields: {
+      enable: { type: 'bool', label: 'Enable', default: true, hint: 'isolated relight layer; sky, clouds, and water stay unchanged' },
+      keyIntensity: { type: 'float', label: 'Key power', min: 0, max: 6, step: 0.02, default: 1.6, hint: 'warm horizon-facing directional light' },
+      fillIntensity: { type: 'float', label: 'Fill power', min: 0, max: 2, step: 0.02, default: 0.35, hint: 'soft sky/horizon fill for shaded faces' },
+      warmth: { type: 'float', label: 'Warmth', min: 0, max: 1, step: 0.02, default: 0.72, hint: '0 = pale peach, 1 = saturated orange' },
+      elevationDeg: { type: 'float', label: 'Key elevation', min: -4, max: 28, step: 0.5, default: 5, unit: '°', hint: 'independent low sunset angle for the relight' },
+      azimuthOffsetDeg: { type: 'float', label: 'Azimuth offset', min: 0, max: 360, step: 1, default: 0, unit: '°', hint: 'clockwise offset from the real sun azimuth' },
+      terrainAmount: { type: 'float', label: 'Terrain amount', min: 0, max: 2, step: 0.02, default: 1, hint: 'extra light received by voxel terrain' },
+      treeAmount: { type: 'float', label: 'Tree amount', min: 0, max: 2, step: 0.02, default: 1, hint: 'extra light received by tree meshes' },
+    },
+  },
+
   // World structure. These are NOT randomized (by design) and use the
   // amber "structural pin" — pinning them is a deliberate, major decision,
   // not the fun lime "roll-friendly" pin.
@@ -280,4 +296,4 @@ export const schema = {
   },
 };
 
-export const sectionOrder = ['orbitSweep', 'sun', 'atmosphere', 'lighting', 'voxel', 'island', 'lagoon', 'seasons', 'water', 'waves', 'tree', 'shadows', 'render', 'godrays', 'camera'];
+export const sectionOrder = ['orbitSweep', 'sun', 'atmosphere', 'lighting', 'sunsetLighting', 'voxel', 'island', 'lagoon', 'seasons', 'water', 'waves', 'tree', 'shadows', 'render', 'godrays', 'camera'];

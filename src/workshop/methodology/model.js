@@ -374,6 +374,68 @@ function getPineSilhouetteTexture(seed) {
   return tex;
 }
 
+function addPineSilhouettePlanes(b, rng, {
+  height,
+  widthMul = 1,
+  yLiftMul = 1,
+  colorFn = pineColor,
+  cards = 4,
+} = {}) {
+  const rotOffset = rng() * Math.PI * 2;
+  for (let card = 0; card < cards; card++) {
+    const yaw = rotOffset + (card / cards) * Math.PI;
+    const right = new THREE.Vector3(Math.cos(yaw), 0, Math.sin(yaw));
+    const origin = new THREE.Vector3((rng() - 0.5) * 0.30, 0, (rng() - 0.5) * 0.30);
+    const cardHeight = height * (0.94 + rng() * 0.10);
+    const cardWidth = (7.6 + rng() * 1.4) * widthMul;
+    const yLift = height * (0.53 + rng() * 0.04) * yLiftMul;
+    const top = yLift + cardHeight * 0.45;
+    const bottom = yLift - cardHeight * 0.43;
+    const rows = 8 + ((rng() * 2) | 0);
+    const pos = [];
+    const colors = [];
+    const point = (x, y) => [
+      origin.x + right.x * x,
+      y,
+      origin.z + right.z * x,
+    ];
+    const addVertex = (x, y, color) => {
+      pos.push(...point(x, y));
+      pushRgb(colors, color);
+    };
+    const addTri = (a, ca, b0, cb, c, cc) => {
+      addVertex(a[0], a[1], ca);
+      addVertex(b0[0], b0[1], cb);
+      addVertex(c[0], c[1], cc);
+    };
+    for (let i = 0; i < rows; i++) {
+      const t = rows === 1 ? 0 : i / (rows - 1);
+      const y = top - t * (top - bottom) * (0.90 + rng() * 0.05);
+      const rowW = cardWidth * (0.09 + Math.pow(t, 0.82) * 0.86) * (0.90 + rng() * 0.18);
+      const rowH = cardHeight * (0.065 + t * 0.075) * (0.88 + rng() * 0.18);
+      const peakX = (rng() - 0.5) * cardWidth * 0.045;
+      const leftLow = peakX - rowW * (0.62 + rng() * 0.10);
+      const rightOuter = peakX + rowW * (0.62 + rng() * 0.10);
+      const tuck = rowW * (0.12 + rng() * 0.06);
+      const peak = [peakX, y + rowH * 0.58];
+      const left = [leftLow, y - rowH * (0.06 + rng() * 0.14)];
+      const leftTuck = [peakX - tuck, y - rowH * (0.45 + rng() * 0.12)];
+      const center = [peakX, y + rowH * 0.10];
+      const rightTuck = [peakX + tuck, y - rowH * (0.45 + rng() * 0.12)];
+      const right = [rightOuter, y - rowH * (0.06 + rng() * 0.14)];
+      const sun = 0.5 + 0.5 * Math.cos(yaw - SUN_AZ);
+      const core = colorFn(0.12 + t * 0.34, rng, 0.05);
+      const edge = colorFn(0.30 + t * 0.42 + sun * 0.22, rng, 0.08);
+      const low = colorFn(0.08 + t * 0.28, rng, 0.05);
+      addTri(peak, edge, left, low, leftTuck, core);
+      addTri(peak, edge, leftTuck, core, center, core);
+      addTri(peak, edge, center, core, rightTuck, core);
+      addTri(peak, edge, rightTuck, core, right, low);
+    }
+    b.customColored(pos, colors);
+  }
+}
+
 // opts.widthMul: multiplier on silhouette card width (>1 = fatter).
 // opts.baseRadiusMul: multiplier on trunk base radius (>1 = stockier base).
 // opts.yLiftMul: multiplier on canopy vertical anchor (<1 = canopy sits lower).
@@ -387,27 +449,14 @@ function pineBillboardHybrid(seed, opts = {}) {
   const trunkLow = tint([0.060, 0.048, 0.035], rng, 0.04);
   const trunkHigh = tint([0.240, 0.170, 0.095], rng, 0.07);
   addSegmentedTrunk(b, rng, height * 0.82, (0.27 + rng() * 0.10) * baseRadiusMul, 0.065 + rng() * 0.035, trunkHigh, 0.45 + rng() * 0.55, 4, trunkLow);
-  const group = b.finish('PineBillboardTrunk', false);
-  const tex = getPineSilhouetteTexture(seed);
-  const mat = new THREE.MeshStandardMaterial({
-    map: tex,
-    transparent: false,
-    alphaTest: 0.55,
-    roughness: 0.95,
-    side: THREE.DoubleSide,
+  addPineSilhouettePlanes(b, rng, {
+    height,
+    widthMul,
+    yLiftMul,
+    colorFn: pineColor,
+    cards: 3 + ((rng() * 2) | 0),
   });
-  const cards = 3 + ((rng() * 2) | 0);
-  const yLift = height * (0.53 + rng() * 0.04) * yLiftMul;
-  const rotOffset = rng() * Math.PI * 2;
-  for (let i = 0; i < cards; i++) {
-    const geo = new THREE.PlaneGeometry((7.6 + rng() * 1.4) * widthMul, height * (0.94 + rng() * 0.10), 1, 1);
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set((rng() - 0.5) * 0.30, yLift, (rng() - 0.5) * 0.30);
-    mesh.rotation.y = rotOffset + (i / cards) * Math.PI;
-    mesh.name = 'PineSilhouetteCard';
-    group.add(mesh);
-  }
-  return finishStyle(group, 'pine-silhouette-shell', 'Pine silhouette shell');
+  return finishStyle(b.finish('PineSilhouetteShell'), 'pine-silhouette-shell', 'Pine silhouette shell');
 }
 
 function pineSparseScots(seed) {
@@ -640,27 +689,20 @@ function pineSilhouetteShellBlue(seed, opts = {}) {
   const trunkLow = tint([0.040, 0.032, 0.022], rng, 0.03);
   const trunkHigh = tint([0.180, 0.130, 0.075], rng, 0.06);
   addSegmentedTrunk(b, rng, height * 0.82, (0.27 + rng() * 0.10) * baseRadiusMul, 0.065 + rng() * 0.035, trunkHigh, 0.45 + rng() * 0.55, 4, trunkLow);
-  const group = b.finish('PineBillboardBlueTrunk', false);
-  const tex = getPineSilhouetteBlueTexture(seed);
-  const mat = new THREE.MeshStandardMaterial({
-    map: tex,
-    transparent: false,
-    alphaTest: 0.55,
-    roughness: 0.95,
-    side: THREE.DoubleSide,
+  const blueColor = (t, r, amt = 0.08) => tint(ramp3(
+    [0.004, 0.018, 0.050],
+    [0.055, 0.190, 0.330],
+    [0.48, 0.82, 0.78],
+    t,
+  ), r, amt);
+  addPineSilhouettePlanes(b, rng, {
+    height,
+    widthMul,
+    yLiftMul,
+    colorFn: blueColor,
+    cards: 3 + ((rng() * 2) | 0),
   });
-  const cards = 3 + ((rng() * 2) | 0);
-  const yLift = height * (0.53 + rng() * 0.04) * yLiftMul;
-  const rotOffset = rng() * Math.PI * 2;
-  for (let i = 0; i < cards; i++) {
-    const geo = new THREE.PlaneGeometry((7.6 + rng() * 1.4) * widthMul, height * (0.94 + rng() * 0.10), 1, 1);
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set((rng() - 0.5) * 0.30, yLift, (rng() - 0.5) * 0.30);
-    mesh.rotation.y = rotOffset + (i / cards) * Math.PI;
-    mesh.name = 'PineSilhouetteBlueCard';
-    group.add(mesh);
-  }
-  return finishStyle(group, 'pine-silhouette-shell-blue', 'Pine silhouette shell blue');
+  return finishStyle(b.finish('PineSilhouetteShellBlue'), 'pine-silhouette-shell-blue', 'Pine silhouette shell blue');
 }
 
 // Hybrid: deciduous-skeleton trunk + branches with pine "fins" (tier plates)

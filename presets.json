@@ -48,6 +48,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -111,6 +124,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -174,6 +200,19 @@
         "exposure": 1.05,
         "fogDensity": 0.00072,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -237,6 +276,19 @@
         "exposure": 1.05,
         "fogDensity": 0.00072,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -303,6 +355,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -369,6 +434,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -435,6 +513,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -501,6 +592,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -764,6 +868,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -830,6 +944,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -910,6 +1037,19 @@
         "exposure": 0.3,
         "fogDensity": 0.0003,
         "horizonWarp": true
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -932,7 +1072,7 @@
       "orbitSweep": {
         "enable": false,
         "speed": 1,
-        "elevationDeg": 15,
+        "elevationDeg": 12.5,
         "azimuthDeg": 117,
         "elevationSpeed": 4,
         "azimuthSpeed": 0.5,
@@ -942,13 +1082,13 @@
         ]
       },
       "sun": {
-        "elevationDeg": 15,
+        "elevationDeg": 12.5,
         "azimuthDeg": 117,
-        "intensity": 33.5
+        "intensity": 18.5
       },
       "atmosphere": {
-        "rayleighMul": 1.06,
-        "mieBeta": 0.0095,
+        "rayleighMul": 0,
+        "mieBeta": 0.05,
         "mieG": 0,
         "ozoneMul": 3,
         "planetRadiusKm": 6350
@@ -965,6 +1105,16 @@
         "glintSpread": 3.4,
         "bloom": 0,
         "aerialHaze": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 0,
+        "fillIntensity": 0.35,
+        "warmth": 0.66,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       },
       "voxel": {
         "seed": 64916,
@@ -1078,7 +1228,7 @@
       },
       "render": {
         "fov": 65,
-        "exposure": 0.2,
+        "exposure": 3,
         "fogDensity": 0,
         "horizonWarp": true
       },
@@ -1114,7 +1264,7 @@
         "focusWater": 0.16
       },
       "cloudFinishing": {
-        "toneMapping": 1,
+        "toneMapping": 0,
         "dithering": true
       },
       "skyDiagnosis": {
@@ -1205,22 +1355,33 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "violetBias": -0.52,
+        "redBias": 0.56,
+        "legacyMix": 0.77,
+        "saturation": 1.08,
+        "lift": 0.185,
+        "horizonBias": 0,
+        "depthStart": 0.883
       }
     },
     "cam": {
       "p": [
-        -804.2891748925716,
-        249.35342899640176,
-        889.8875492613403
+        -708.0568568477523,
+        389.04162431542295,
+        800.4613202121068
       ],
       "q": [
-        -0.06265811423939308,
-        -0.26378711517536546,
-        -0.017174321866120307,
-        0.9623904411702459
+        -0.243423782892105,
+        -0.27914995446395297,
+        -0.07338376131157376,
+        0.9259778552541288
       ]
     },
-    "t": 1780027532093
+    "t": 1780104474833
   },
   "B4": {
     "params": {
@@ -1301,6 +1462,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -1397,6 +1571,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -1660,6 +1847,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -1682,8 +1879,8 @@
       "orbitSweep": {
         "enable": false,
         "speed": 1,
-        "elevationDeg": 17.5,
-        "azimuthDeg": 117,
+        "elevationDeg": 1,
+        "azimuthDeg": 18,
         "elevationSpeed": 4,
         "azimuthSpeed": 0.5,
         "elevationRange": [
@@ -1692,32 +1889,42 @@
         ]
       },
       "sun": {
-        "elevationDeg": 17.5,
-        "azimuthDeg": 117,
-        "intensity": 33.5
+        "elevationDeg": 1,
+        "azimuthDeg": 18,
+        "intensity": 60
       },
       "atmosphere": {
-        "rayleighMul": 1.06,
-        "mieBeta": 0.0095,
+        "rayleighMul": 4,
+        "mieBeta": 0.0405,
         "mieG": 0,
-        "ozoneMul": 3,
+        "ozoneMul": 2.16,
         "planetRadiusKm": 6350
       },
       "lighting": {
-        "skyBounce": 1.38,
-        "bounceTint": 0.22,
-        "groundBounce": 0.9,
-        "sunElevationGain": 1,
-        "sunFloor": 4,
-        "sunCeiling": 5,
-        "secondaryEnergy": 0.49,
-        "sunGlint": 1.7,
-        "glintSpread": 3.4,
+        "skyBounce": 1.28,
+        "bounceTint": 0.92,
+        "groundBounce": 0.36,
+        "sunElevationGain": 0.45,
+        "sunFloor": 0.84,
+        "sunCeiling": 2,
+        "secondaryEnergy": 0.3,
+        "sunGlint": 1.05,
+        "glintSpread": 1.25,
         "bloom": 0,
         "aerialHaze": 0
       },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
+      },
       "voxel": {
-        "seed": 64916,
+        "seed": 21155,
         "resolution": 992,
         "terraceStep": 0.5
       },
@@ -1725,7 +1932,7 @@
         "radius": 1070,
         "shape": 3,
         "lowland": 38,
-        "massif": 280,
+        "massif": 470,
         "massifSharpness": 1,
         "massifOffsetX": 0,
         "massifOffsetZ": 0,
@@ -1781,17 +1988,17 @@
         "shoreGlowFollow": 0
       },
       "waves": {
-        "waveSpeed": 2.7,
-        "glintSpeed": 3.5,
+        "waveSpeed": 3,
+        "glintSpeed": 5,
         "glintScale": 1.34,
-        "waveScale": 0.0275,
-        "waveRotation": 143,
-        "surfaceOpacity": 0.55,
-        "waveHeight": 1.92,
-        "waveChoppy": 5.95,
+        "waveScale": 0.017328903180189877,
+        "waveRotation": 141,
+        "surfaceOpacity": 0.91,
+        "waveHeight": 3,
+        "waveChoppy": 7.35,
         "surfaceStage": 5,
         "detailMix": 0.42,
-        "normalStrength": 0.4,
+        "normalStrength": 2,
         "refractionStrength": 0.18
       },
       "tree": {
@@ -1819,17 +2026,17 @@
         "secondaryEnable": true,
         "secondarySize": 2560,
         "secondaryCoverage": 1,
-        "secondaryMix": 1,
-        "blendMode": 1,
+        "secondaryMix": 0.16,
+        "blendMode": 0,
         "filterMode": 1,
         "softness": 1.7,
         "bias": -0.0006,
         "normalBias": 2.2
       },
       "render": {
-        "fov": 65,
+        "fov": 81,
         "exposure": 0.2,
-        "fogDensity": 0,
+        "fogDensity": 0.0003,
         "horizonWarp": true
       },
       "godrays": {
@@ -1864,7 +2071,7 @@
         "focusWater": 0.16
       },
       "cloudFinishing": {
-        "toneMapping": 1,
+        "toneMapping": 0,
         "dithering": true
       },
       "skyDiagnosis": {
@@ -1877,19 +2084,30 @@
         "disableHorizonWarp": false,
         "forceBelowHorizonFog": false
       },
+      "atmosphereBridge": {
+        "enable": false,
+        "amount": 0.35,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "legacyMix": 1,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
+      },
       "takramAtmosphere": {
         "sunLight": true,
         "skyLight": true,
         "ground": true,
         "groundAlbedo": 0,
-        "albedoScale": 0.36,
+        "albedoScale": 2,
         "sun": true,
         "transmittance": true,
         "inscatter": true
       },
       "cloudWeather": {
-        "coverage": 0.38,
-        "weatherRepeatX": 77,
+        "coverage": 0.4,
+        "weatherRepeatX": 100,
         "weatherRepeatY": 100,
         "weatherVelocityX": 0.001,
         "weatherVelocityY": 0,
@@ -1899,11 +2117,11 @@
         "turbulenceDisplacement": 350
       },
       "cloudLighting": {
-        "scatteringCoefficient": 3,
-        "groundBounceScale": 2,
-        "skyLightScale": 0,
-        "powderScale": 0,
-        "absorptionCoefficient": 2.46,
+        "scatteringCoefficient": 1.5222677306879997,
+        "groundBounceScale": 0.6,
+        "skyLightScale": 1.3,
+        "powderScale": 0.26,
+        "absorptionCoefficient": 0.72,
         "powderExponent": 150,
         "anisotropy1": 0.7,
         "anisotropy2": -0.2,
@@ -1914,19 +2132,23 @@
       },
       "cloudShadows": {
         "layerShadow": true,
-        "lightShafts": false,
         "cascadeCount": 3,
         "mapSize": 0,
+        "temporalPass": true,
+        "temporalSmoothing": 0.999,
+        "varianceGamma": 1,
+        "temporalJitter": false,
         "shadowIterations": 50,
         "shadowStep": 100,
+        "lightShafts": false,
         "shadowLengthIterations": 180,
         "shadowLengthStep": 80,
         "shadowLengthDistance": 120000
       },
       "cloudsRender": {
-        "exposure": 3.9,
+        "exposure": 10,
         "mode": 0,
-        "atmosphere": true,
+        "atmosphere": false,
         "clouds": true,
         "aerialPerspective": true,
         "quality": 2,
@@ -1934,10 +2156,10 @@
         "temporalUpscale": true
       },
       "cloudLayer0": {
-        "referenceStack": true,
+        "referenceStack": false,
         "enabled": true,
-        "altitude": 750,
-        "height": 600,
+        "altitude": 3300,
+        "height": 1675,
         "densityScale": 0.4,
         "shapeAmount": 1,
         "shapeDetailAmount": 0.8,
@@ -1955,18 +2177,18 @@
     },
     "cam": {
       "p": [
-        -624.0870546020698,
-        188.233256028708,
-        593.9649059343573
+        -309.0416640709556,
+        319.1697017748794,
+        -515.8294816813617
       ],
       "q": [
-        -0.07733165364167964,
-        -0.445295261681246,
-        -0.03863934727866357,
-        0.8912008449901474
+        -0.012000038573005278,
+        -0.9240088478617692,
+        -0.029097121878282537,
+        0.38107349113499445
       ]
     },
-    "t": 1779941989334
+    "t": 1780104617964
   },
   "D1": {
     "params": {
@@ -2246,6 +2468,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -2541,6 +2773,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -2836,6 +3078,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -2932,6 +3184,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -3028,6 +3293,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -3050,8 +3328,8 @@
       "orbitSweep": {
         "enable": false,
         "speed": 1,
-        "elevationDeg": 14,
-        "azimuthDeg": -118,
+        "elevationDeg": 1,
+        "azimuthDeg": 18,
         "elevationSpeed": 4,
         "azimuthSpeed": 0.5,
         "elevationRange": [
@@ -3060,28 +3338,42 @@
         ]
       },
       "sun": {
-        "elevationDeg": 14,
-        "azimuthDeg": -118,
+        "elevationDeg": 1,
+        "azimuthDeg": 18,
         "intensity": 60
       },
       "atmosphere": {
-        "rayleighMul": 0.05,
-        "mieBeta": 0,
+        "rayleighMul": 4,
+        "mieBeta": 0.0405,
         "mieG": 0,
-        "ozoneMul": 3,
+        "ozoneMul": 2.16,
         "planetRadiusKm": 6350
       },
       "lighting": {
-        "skyBounce": 1.38,
-        "bounceTint": 0.22,
-        "groundBounce": 0.9,
-        "sunGlint": 1.7,
-        "glintSpread": 3.4,
+        "skyBounce": 1.28,
+        "bounceTint": 0.92,
+        "groundBounce": 0.36,
+        "sunElevationGain": 0.45,
+        "sunFloor": 0.84,
+        "sunCeiling": 2,
+        "secondaryEnergy": 0.3,
+        "sunGlint": 1.05,
+        "glintSpread": 1.25,
         "bloom": 0,
         "aerialHaze": 0
       },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
+      },
       "voxel": {
-        "seed": 64916,
+        "seed": 21155,
         "resolution": 992,
         "terraceStep": 0.5
       },
@@ -3098,6 +3390,20 @@
         "beachWidth": 3,
         "valleyDepth": 110,
         "valleyWidth": 18
+      },
+      "lagoon": {
+        "enable": true,
+        "x": 0.24,
+        "z": -0.12,
+        "radiusX": 230,
+        "radiusZ": 135,
+        "rotation": -24,
+        "depth": 1.4,
+        "lowlandCap": 54,
+        "inlet": 0.12,
+        "apronWidth": 42,
+        "whiteSand": 0.9,
+        "treeAttraction": 1.1
       },
       "seasons": {
         "sweepDeg": 38,
@@ -3128,28 +3434,38 @@
         "causticOpacity": 0,
         "shoreGlow": 1.35,
         "shoreGlowWidth": 1.3,
-        "shoreGlowFollow": 0,
-        "referenceBlocks": true
+        "shoreGlowFollow": 0
       },
       "waves": {
-        "waveSpeed": 2.7,
-        "glintSpeed": 3.5,
+        "waveSpeed": 3,
+        "glintSpeed": 5,
         "glintScale": 1.34,
-        "waveScale": 0.0275,
-        "waveRotation": 143,
-        "surfaceOpacity": 0.55,
-        "waveHeight": 1.92,
-        "waveChoppy": 5.95,
+        "waveScale": 0.017328903180189877,
+        "waveRotation": 141,
+        "surfaceOpacity": 0.91,
+        "waveHeight": 3,
+        "waveChoppy": 7.35,
         "surfaceStage": 5,
         "detailMix": 0.42,
-        "normalStrength": 0.4,
+        "normalStrength": 2,
         "refractionStrength": 0.18
       },
       "tree": {
-        "palmCount": 499,
-        "palmLine": 0.58,
-        "mixedTreeCount": 34,
-        "palmSway": 1
+        "enable": true,
+        "totalCount": 1300,
+        "globalScale": 1.35,
+        "spacing": 9,
+        "clusterBias": 1,
+        "autumnWeight": 1.55,
+        "summerWeight": 0.95,
+        "spruceWeight": 0.75,
+        "palmWeight": 0.25,
+        "palmTarget": 400,
+        "peakSparse": 0.08,
+        "openCuts": 0.6,
+        "autumnScale": 1.3,
+        "spruceScale": 1.22,
+        "palmScale": 0.9
       },
       "shadows": {
         "enable": true,
@@ -3159,16 +3475,16 @@
         "secondaryEnable": true,
         "secondarySize": 2560,
         "secondaryCoverage": 1,
-        "secondaryMix": 1,
-        "blendMode": 1,
+        "secondaryMix": 0.16,
+        "blendMode": 0,
         "filterMode": 1,
         "softness": 1.7,
         "bias": -0.0006,
         "normalBias": 2.2
       },
       "render": {
-        "fov": 65,
-        "exposure": 0.3,
+        "fov": 81,
+        "exposure": 0.2,
         "fogDensity": 0.0003,
         "horizonWarp": true
       },
@@ -3203,6 +3519,10 @@
         "focusPalms": 0.12,
         "focusWater": 0.16
       },
+      "cloudFinishing": {
+        "toneMapping": 0,
+        "dithering": true
+      },
       "skyDiagnosis": {
         "skyOnly": false,
         "fastSkyBoot": false,
@@ -3213,25 +3533,26 @@
         "disableHorizonWarp": false,
         "forceBelowHorizonFog": false
       },
-      "cloudsRender": {
-        "mode": 0,
-        "atmosphere": true,
-        "clouds": true,
-        "aerialPerspective": true,
-        "quality": 2,
-        "resolutionScale": 0.75,
-        "temporalUpscale": true,
-        "exposure": 10
+      "atmosphereBridge": {
+        "enable": true,
+        "amount": 0.35,
+        "violetBias": 0.2,
+        "redBias": 0,
+        "legacyMix": 1,
+        "saturation": 1.08,
+        "lift": 0.03,
+        "horizonBias": 0.4,
+        "depthStart": 0.985
       },
       "takramAtmosphere": {
-        "sun": true,
-        "ground": true,
-        "groundAlbedo": 0.018,
-        "transmittance": true,
-        "inscatter": true,
         "sunLight": true,
         "skyLight": true,
-        "albedoScale": 1
+        "ground": true,
+        "groundAlbedo": 0,
+        "albedoScale": 2,
+        "sun": true,
+        "transmittance": true,
+        "inscatter": true
       },
       "cloudWeather": {
         "coverage": 0.4,
@@ -3244,24 +3565,12 @@
         "turbulenceRepeat": 20,
         "turbulenceDisplacement": 350
       },
-      "cloudLayer0": {
-        "referenceStack": true,
-        "enabled": true,
-        "altitude": 750,
-        "height": 600,
-        "densityScale": 0.4,
-        "shapeAmount": 1,
-        "shapeDetailAmount": 0.8,
-        "weatherExponent": 1,
-        "shapeAlteringBias": 0.35,
-        "coverageFilterWidth": 0.6
-      },
       "cloudLighting": {
-        "scatteringCoefficient": 1,
-        "absorptionCoefficient": 0,
-        "skyLightScale": 1,
-        "groundBounceScale": 1,
-        "powderScale": 0.8,
+        "scatteringCoefficient": 1.5222677306879997,
+        "groundBounceScale": 0.6,
+        "skyLightScale": 1.3,
+        "powderScale": 0.26,
+        "absorptionCoefficient": 0.72,
         "powderExponent": 150,
         "anisotropy1": 0.7,
         "anisotropy2": -0.2,
@@ -3272,14 +3581,40 @@
       },
       "cloudShadows": {
         "layerShadow": true,
-        "lightShafts": false,
         "cascadeCount": 3,
         "mapSize": 0,
+        "temporalPass": true,
+        "temporalSmoothing": 0.999,
+        "varianceGamma": 1,
+        "temporalJitter": false,
         "shadowIterations": 50,
         "shadowStep": 100,
+        "lightShafts": false,
         "shadowLengthIterations": 180,
         "shadowLengthStep": 80,
         "shadowLengthDistance": 120000
+      },
+      "cloudsRender": {
+        "exposure": 10,
+        "mode": 0,
+        "atmosphere": false,
+        "clouds": true,
+        "aerialPerspective": true,
+        "quality": 2,
+        "resolutionScale": 0.75,
+        "temporalUpscale": true
+      },
+      "cloudLayer0": {
+        "referenceStack": false,
+        "enabled": true,
+        "altitude": 3300,
+        "height": 1675,
+        "densityScale": 0.4,
+        "shapeAmount": 1,
+        "shapeDetailAmount": 0.8,
+        "weatherExponent": 1,
+        "shapeAlteringBias": 0.35,
+        "coverageFilterWidth": 0.6
       },
       "cloudDebug": {
         "mode": 0,
@@ -3287,26 +3622,22 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
-      },
-      "cloudFinishing": {
-        "toneMapping": 0,
-        "dithering": true
       }
     },
     "cam": {
       "p": [
-        1030.6330317860704,
-        233.54673381043386,
-        -381.2905291140103
+        -1091.1520143168993,
+        377.1119782751266,
+        -1094.5394123765066
       ],
       "q": [
-        -0.05070426723298078,
-        0.7493164235084565,
-        0.057764075631256795,
-        0.657736486984969
+        -0.005749194127051251,
+        -0.9374188302267045,
+        -0.015495186615131027,
+        0.34781141829308726
       ]
     },
-    "t": 1779732097211
+    "t": 1780104831702
   },
   "A4": {
     "params": {
@@ -3554,6 +3885,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -3653,6 +3994,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -3752,6 +4106,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -3851,6 +4218,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -3950,6 +4330,19 @@
         "samples": 16,
         "resScale": 0.25,
         "sharp": 0.25
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -4241,6 +4634,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -4445,7 +4848,7 @@
         "focusWater": 0.16
       },
       "cloudFinishing": {
-        "toneMapping": 1,
+        "toneMapping": 0,
         "dithering": true
       },
       "skyDiagnosis": {
@@ -4532,6 +4935,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -4823,6 +5236,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -5114,6 +5537,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -5405,6 +5838,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -5508,6 +5951,19 @@
         "blurAmount": 0.59,
         "blurRadius": 4.2,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -5611,6 +6067,19 @@
         "blurAmount": 0.59,
         "blurRadius": 4.2,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -5714,6 +6183,19 @@
         "blurAmount": 0.59,
         "blurRadius": 3.85,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -5817,6 +6299,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -5920,6 +6415,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6023,6 +6531,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6126,6 +6647,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6229,6 +6763,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6332,6 +6879,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6435,6 +6995,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6538,6 +7111,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6641,6 +7227,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6744,6 +7343,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6859,6 +7471,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -6974,6 +7599,19 @@
         "blurAmount": 1,
         "blurRadius": 8,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -7089,6 +7727,19 @@
         "blurAmount": 1,
         "blurRadius": 8,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -7204,6 +7855,19 @@
         "blurAmount": 0.18,
         "blurRadius": 1.5,
         "blurPasses": 1
+      },
+      "cloudFinishing": {
+        "toneMapping": 0
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -7467,6 +8131,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -7730,6 +8404,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -7993,6 +8677,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -8256,6 +8950,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -8519,6 +9223,16 @@
       "cloudFinishing": {
         "toneMapping": 0,
         "dithering": true
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -8810,6 +9524,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -9101,6 +9825,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -9396,6 +10130,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -9691,6 +10435,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {
@@ -9986,6 +10740,16 @@
         "minStep": 80,
         "maxStep": 1000,
         "rayDistance": 120000
+      },
+      "sunsetLighting": {
+        "enable": true,
+        "keyIntensity": 1.6,
+        "fillIntensity": 0.35,
+        "warmth": 0.72,
+        "elevationDeg": 5,
+        "azimuthOffsetDeg": 0,
+        "terrainAmount": 1,
+        "treeAmount": 1
       }
     },
     "cam": {

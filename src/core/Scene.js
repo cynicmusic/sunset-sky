@@ -86,6 +86,15 @@ export class Scene {
     this.scene.add(this.hemi);
     this.ambient = new THREE.AmbientLight(0xffffff, 0.05);
     this.scene.add(this.ambient);
+    this._sunsetRelightMaterials = new Set();
+    this._sunsetRelightState = {
+      dir: new THREE.Vector3(1, 0, 0),
+      color: new THREE.Color('#ff986c'),
+      key: 0,
+      fill: 0,
+      terrainAmount: 1,
+      treeAmount: 1,
+    };
 
     this.scene.fog = new THREE.FogExp2(0xbcd4d6, store.get('render.fogDensity'));
 
@@ -159,6 +168,7 @@ export class Scene {
     const planted = this._plantTrees(vol, opts);
     this.treeCount = planted.treeCount;
     this.treeCounts = planted.treeCounts;
+    this._applySunsetRelightTargets();
     this.loader?.step('trees', `${this.treeCount}`);
     this.loader?.done('ready');
     this._hasGenerated = true;
@@ -329,6 +339,8 @@ export class Scene {
     this.scene.add(this.treeGroup);
     this.treeCount = planted.treeCount;
     this.treeCounts = planted.treeCounts;
+    this._applySunsetRelightTargets();
+    this._skyDirty = true;
   }
 
   _plantTrees(vol, opts, targetGroup = this.treeGroup) {
@@ -749,8 +761,94 @@ export class Scene {
     this.scene.fog.color.set('#d99250').lerp(new THREE.Color('#acc6cf'), day2);
     this._skyDirty = true;
 
+    this._applySunsetLighting();
     this._applyWaterLighting();
     this._applySkyDiagnosis();
+  }
+
+  _applySunsetLighting() {
+    const cfg = this.store.get('sunsetLighting') || {};
+    const enabled = cfg.enable === true;
+    const keyBase = enabled ? THREE.MathUtils.clamp(cfg.keyIntensity ?? 1.6, 0, 6) : 0;
+    const fillBase = enabled ? THREE.MathUtils.clamp(cfg.fillIntensity ?? 0.35, 0, 2) : 0;
+    const terrainAmount = THREE.MathUtils.clamp(cfg.terrainAmount ?? 1, 0, 2);
+    const treeAmount = THREE.MathUtils.clamp(cfg.treeAmount ?? 1, 0, 2);
+    const warmth = THREE.MathUtils.clamp(cfg.warmth ?? 0.72, 0, 1);
+    const sun = this._effectiveSun();
+    const relightDir = this._sunDir({
+      elevationDeg: cfg.elevationDeg ?? 5,
+      azimuthDeg: sun.azimuthDeg + (cfg.azimuthOffsetDeg ?? 0),
+      intensity: sun.intensity,
+    });
+
+    const color = (this._sunsetKeyColor ||= new THREE.Color())
+      .set('#ffe1b8')
+      .lerp(new THREE.Color('#ff6a2a'), warmth);
+
+    this._sunsetRelightState.dir.copy(relightDir);
+    this._sunsetRelightState.color.copy(color);
+    this._sunsetRelightState.key = keyBase;
+    this._sunsetRelightState.fill = fillBase;
+    this._sunsetRelightState.terrainAmount = terrainAmount;
+    this._sunsetRelightState.treeAmount = treeAmount;
+    this._writeSunsetRelightUniforms();
+  }
+
+  _applySunsetRelightTargets() {
+    this._patchSunsetRelightGroup(this.islandGroup, 'terrain');
+    this._patchSunsetRelightGroup(this.treeGroup, 'tree');
+    this._writeSunsetRelightUniforms();
+  }
+
+  _patchSunsetRelightGroup(root, kind) {
+    root?.traverse?.((obj) => {
+      if (!obj?.isMesh) return;
+      const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+      for (const material of materials) this._patchSunsetRelightMaterial(material, kind);
+    });
+  }
+
+  _patchSunsetRelightMaterial(material, kind) {
+    if (!material || material.userData?.sunsetRelightPatched) return;
+    material.userData.sunsetRelightPatched = true;
+    material.userData.sunsetRelightKind = kind;
+    const previous = material.onBeforeCompile;
+    material.onBeforeCompile = (shader, renderer) => {
+      previous?.call(material, shader, renderer);
+      shader.uniforms.uSunsetRelightDir = { value: this._sunsetRelightState.dir.clone() };
+      shader.uniforms.uSunsetRelightColor = { value: this._sunsetRelightState.color.clone() };
+      shader.uniforms.uSunsetRelightKey = { value: 0 };
+      shader.uniforms.uSunsetRelightFill = { value: 0 };
+      shader.uniforms.uSunsetRelightAmount = { value: 1 };
+      material.userData.sunsetRelightUniforms = shader.uniforms;
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', '#include <common>\nvarying vec3 vSunsetRelightNormal;')
+        .replace('#include <defaultnormal_vertex>', '#include <defaultnormal_vertex>\nvSunsetRelightNormal = normalize(mat3(modelMatrix) * objectNormal);');
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', '#include <common>\nvarying vec3 vSunsetRelightNormal;\nuniform vec3 uSunsetRelightDir;\nuniform vec3 uSunsetRelightColor;\nuniform float uSunsetRelightKey;\nuniform float uSunsetRelightFill;\nuniform float uSunsetRelightAmount;')
+        .replace('#include <lights_fragment_end>', '#include <lights_fragment_end>\n  float sunsetRelightNdotL = max(dot(normalize(vSunsetRelightNormal), normalize(uSunsetRelightDir)), 0.0);\n  reflectedLight.indirectDiffuse += diffuseColor.rgb * uSunsetRelightColor * uSunsetRelightAmount * (uSunsetRelightFill + sunsetRelightNdotL * uSunsetRelightKey);');
+      this._writeSunsetRelightUniformsFor(material);
+    };
+    material.needsUpdate = true;
+    this._sunsetRelightMaterials.add(material);
+  }
+
+  _writeSunsetRelightUniforms() {
+    for (const material of this._sunsetRelightMaterials || []) this._writeSunsetRelightUniformsFor(material);
+  }
+
+  _writeSunsetRelightUniformsFor(material) {
+    const uniforms = material?.userData?.sunsetRelightUniforms;
+    if (!uniforms) return;
+    const state = this._sunsetRelightState;
+    const amount = material.userData.sunsetRelightKind === 'tree'
+      ? state.treeAmount
+      : state.terrainAmount;
+    uniforms.uSunsetRelightDir.value.copy(state.dir);
+    uniforms.uSunsetRelightColor.value.copy(state.color);
+    uniforms.uSunsetRelightKey.value = state.key;
+    uniforms.uSunsetRelightFill.value = state.fill;
+    uniforms.uSunsetRelightAmount.value = amount;
   }
 
   // Push sun + glint params to the sea (guarded — sea is rebuilt on regen).
@@ -759,6 +857,7 @@ export class Scene {
     const s = this.store;
     this.sea.setSun(this._sunDir(), this.sun.color);
     this.sea.setGlint(s.get('lighting.sunGlint'), s.get('lighting.glintSpread'));
+    this.sea.setHorizon(this.scene.fog.color);
   }
 
   _onParam(evt) {
@@ -769,8 +868,11 @@ export class Scene {
         p.startsWith('takramAtmosphere.') || p.startsWith('cloudWeather.') ||
         p.startsWith('cloudLayer0.') || p.startsWith('cloudLighting.') ||
         p.startsWith('cloudShadows.') || p.startsWith('cloudDebug.') ||
-        p.startsWith('cloudFinishing.')) {
+        p.startsWith('cloudFinishing.') || p.startsWith('atmosphereBridge.')) {
       this._applyAll();
+    }
+    if (p === '*' || p.startsWith('sunsetLighting.')) {
+      this._applySunsetLighting();
     }
     if (p === '*' || p.startsWith('island.') || p.startsWith('voxel.') || p.startsWith('seasons.') ||
         p.startsWith('tree.') || p.startsWith('lagoon.') ||
@@ -864,6 +966,8 @@ export class Scene {
       },
       layer: this.store.get('cloudLayer0') || {},
       lighting: this.store.get('cloudLighting') || {},
+      atmosphereBridge: this.store.get('atmosphereBridge') || {},
+      legacyAtmosphere: this.store.get('atmosphere') || {},
       shadows: this.mobileProfile.mobile
         ? {
           ...(this.store.get('cloudShadows') || {}),
@@ -1115,6 +1219,7 @@ export class Scene {
       this.sea?.setHorizon(this.scene.fog.color);     // ocean rim → live sunset
       // faked GI: pull the hemisphere fill toward the live sky colour
       if (this._hemiBase) this.hemi.color.copy(this._hemiBase).lerp(this.scene.fog.color, this._gi?.tint ?? 0.7);
+      this._applySunsetLighting();
     } catch {
       /* HalfFloat readback unsupported on this driver — analytic fog stands */
     }

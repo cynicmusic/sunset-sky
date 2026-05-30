@@ -6,7 +6,10 @@ import {
 import { CloudsEffect } from '@takram/three-clouds';
 import { Ellipsoid, Geodetic } from '@takram/three-geospatial';
 import {
+  BlendFunction,
+  Effect,
   EffectComposer,
+  EffectAttribute,
   EffectPass,
   NormalPass,
   RenderPass,
@@ -34,6 +37,27 @@ const RESOLVE_DEBUG_DEFINES = [
   'DEBUG_SHOW_SHADOW_LENGTH',
   'DEBUG_SHOW_VELOCITY',
 ];
+const ATMOSPHERE_BRIDGE_SHADER = /* glsl */ `
+uniform float amount;
+uniform vec3 tintColor;
+uniform float saturation;
+uniform float lift;
+uniform float horizonBias;
+uniform float depthStart;
+uniform float depthEnd;
+
+void mainImage(const in vec4 inputColor, const in vec2 uv, const in float depth, out vec4 outputColor) {
+  vec3 color = max(inputColor.rgb, vec3(0.0));
+  float farMask = smoothstep(depthStart, depthEnd, depth);
+  float lowerSky = pow(clamp(1.0 - uv.y, 0.0, 1.0), 0.65);
+  float verticalMask = mix(1.0, lowerSky, horizonBias);
+  float mask = clamp(amount * farMask * verticalMask, 0.0, 1.0);
+  float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
+  vec3 tinted = color * tintColor + lift * luma * tintColor;
+  tinted = mix(vec3(luma), tinted, saturation);
+  outputColor = vec4(mix(color, tinted, mask), inputColor.a);
+}
+`;
 const REFERENCE_CLOUD_LAYERS = [
   {
     channel: 'r',
@@ -119,6 +143,8 @@ export class TakramSkyRig {
     this.shadowVarianceGamma = 1;
     this._lastShadowTemporalPass = true;
     this._lastShadowTemporalJitter = false;
+    this.atmosphereBridgeEnabled = false;
+    this.atmosphereBridgeTint = new THREE.Color(1, 1, 1);
 
     this.worldToECEFMatrix = makeWorldToECEFMatrix();
     this.sunECEF = new THREE.Vector3(0, 1, 0);
@@ -167,7 +193,20 @@ export class TakramSkyRig {
     this.normalPass = new NormalPass(scene, camera);
     this.aerialPerspective.normalBuffer = this.normalPass.texture;
     this.toneMappingEffect = new ToneMappingEffect({ mode: this.toneMappingMode });
-    this.finalPass = new EffectPass(camera, this.toneMappingEffect);
+    this.atmosphereBridgeEffect = new Effect('LegacyAtmosphereBridgeEffect', ATMOSPHERE_BRIDGE_SHADER, {
+      attributes: EffectAttribute.DEPTH,
+      blendFunction: BlendFunction.SRC,
+      uniforms: new Map([
+        ['amount', new THREE.Uniform(0)],
+        ['tintColor', new THREE.Uniform(new THREE.Color(1, 1, 1))],
+        ['saturation', new THREE.Uniform(1)],
+        ['lift', new THREE.Uniform(0)],
+        ['horizonBias', new THREE.Uniform(0)],
+        ['depthStart', new THREE.Uniform(0.985)],
+        ['depthEnd', new THREE.Uniform(1)],
+      ]),
+    });
+    this.finalPass = new EffectPass(camera, this.atmosphereBridgeEffect, this.toneMappingEffect);
     this.finalPass.dithering = this.dithering;
     this.effectPass = null;
     this.composer.addPass(this.renderPass);
@@ -200,6 +239,8 @@ export class TakramSkyRig {
     const shadows = params.shadows || {};
     const debug = params.debug || {};
     const finishing = params.finishing || {};
+    const atmosphereBridge = params.atmosphereBridge || {};
+    const legacyAtmosphere = params.legacyAtmosphere || {};
 
     this.exposure = render.exposure ?? this.exposure;
     this.coverage = THREE.MathUtils.clamp(weather.coverage ?? this.coverage, 0, 1);
@@ -219,6 +260,7 @@ export class TakramSkyRig {
     this._applyWeatherParams(weather);
     this._applyLayerParams(layer, shadows);
     this._applyLightingParams(lighting);
+    this._applyAtmosphereBridgeParams(atmosphereBridge, legacyAtmosphere);
     this._applyShadowParams(shadows);
     this._applyDebugParams(debug);
     this._applyFinishingParams(finishing);
@@ -305,6 +347,11 @@ export class TakramSkyRig {
       exposure: this.exposure,
       toneMapping: TONE_MAPPING_LABELS[this.toneMappingIndex] ?? 'aces',
       dithering: this.dithering,
+      atmosphereBridge: {
+        enabled: this.atmosphereBridgeEnabled,
+        tint: this.atmosphereBridgeTint.toArray().map((v) => Number(v.toFixed(3))),
+        amount: Number(this.atmosphereBridgeEffect.uniforms.get('amount').value.toFixed(3)),
+      },
       qualityPreset: this.qualityPreset,
       resolutionScale: this.resolutionScale,
       coverage: this.coverage,
@@ -412,6 +459,54 @@ export class TakramSkyRig {
     this.clouds.shapeDetail = params.shapeDetail !== false;
     this.clouds.turbulence = !!params.turbulence;
     this.clouds.haze = params.haze !== false;
+  }
+
+  _applyAtmosphereBridgeParams(params = {}, legacyAtmosphere = {}) {
+    const uniforms = this.atmosphereBridgeEffect.uniforms;
+    const enabled = params.enable === true;
+    const amount = enabled ? THREE.MathUtils.clamp(params.amount ?? 0.35, 0, 1) : 0;
+    const tint = this._legacyAtmosphereTint(legacyAtmosphere, params);
+    this.atmosphereBridgeEnabled = enabled;
+    this.atmosphereBridgeTint.copy(tint);
+    uniforms.get('amount').value = amount;
+    uniforms.get('tintColor').value.copy(tint);
+    uniforms.get('saturation').value = THREE.MathUtils.clamp(params.saturation ?? 1.08, 0, 2);
+    uniforms.get('lift').value = THREE.MathUtils.clamp(params.lift ?? 0.03, 0, 0.5);
+    uniforms.get('horizonBias').value = THREE.MathUtils.clamp(params.horizonBias ?? 0.4, 0, 1);
+    const depthStart = THREE.MathUtils.clamp(params.depthStart ?? 0.985, 0.8, 1);
+    uniforms.get('depthStart').value = depthStart;
+    uniforms.get('depthEnd').value = Math.min(1, Math.max(depthStart + 0.0001, params.depthEnd ?? 1));
+  }
+
+  _legacyAtmosphereTint(legacy = {}, bridge = {}) {
+    const legacyMix = THREE.MathUtils.clamp(bridge.legacyMix ?? 1, 0, 1);
+    const rayleigh = THREE.MathUtils.clamp(legacy.rayleighMul ?? 1, 0, 4) / 4;
+    const mie = THREE.MathUtils.clamp(legacy.mieBeta ?? 0.021, 0, 0.05) / 0.05;
+    const mieG = THREE.MathUtils.clamp(legacy.mieG ?? 0.758, 0, 0.95) / 0.95;
+    const ozone = THREE.MathUtils.clamp(legacy.ozoneMul ?? 1, 0, 3) / 3;
+    const planetR = THREE.MathUtils.clamp(legacy.planetRadiusKm ?? 6371, 150, 6371);
+    const lowPlanet = 1 - (planetR - 150) / (6371 - 150);
+    const redBias = THREE.MathUtils.clamp(bridge.redBias ?? 0, -1, 1);
+    const violetBias = THREE.MathUtils.clamp(bridge.violetBias ?? 0.2, -1, 1);
+
+    const r = 1
+      + legacyMix * (0.42 * mie + 0.26 * mieG + 0.22 * ozone + 0.18 * lowPlanet - 0.12 * rayleigh)
+      + redBias * 0.35
+      + violetBias * 0.10;
+    const g = 1
+      + legacyMix * (0.12 * mie - 0.18 * ozone - 0.16 * lowPlanet + 0.06 * rayleigh)
+      - redBias * 0.10
+      - violetBias * 0.18;
+    const b = 1
+      + legacyMix * (0.34 * rayleigh + 0.42 * ozone + 0.30 * lowPlanet - 0.22 * mie)
+      - redBias * 0.16
+      + violetBias * 0.34;
+
+    return (this._atmosphereBridgeColor ||= new THREE.Color()).setRGB(
+      THREE.MathUtils.clamp(r, 0.35, 2.2),
+      THREE.MathUtils.clamp(g, 0.35, 2.2),
+      THREE.MathUtils.clamp(b, 0.35, 2.2),
+    );
   }
 
   _applyShadowParams(params = {}) {
